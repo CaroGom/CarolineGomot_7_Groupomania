@@ -2,6 +2,14 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const ObjectID = require('mongoose').Types.ObjectId;
 const User = require('../models/usermodel');
+const maxAge = 3*24*60*60*1000;
+const createToken = (id) =>{
+    return  jwt.sign(
+        { id },
+        process.env.RANDOM_TOKEN_SECRET,
+        { expiresIn: maxAge}
+    )
+}
 
 
 exports.getAllUsers = async (req, res) => {
@@ -20,6 +28,33 @@ exports.userInfo = (req, res) => {
     })
     .select('-password')
 }
+
+exports.deleteUser = async (req, res) => {
+    if (!ObjectID.isValid(req.params.id))
+        return res.status(400).send('ID unknown : ' + req.params.id)
+    try {
+        await User.remove({_id: req.params.id}).exec();
+        res.status(200).json({message : "User successfully deleted"});
+    }
+    catch(err) {
+        return res.status(500).json({ message : err});
+    }
+}
+
+/*exports.updateUser = (req, res) => {
+    if (!ObjectID.isValid(req.params.id))
+        return res.status(400).send('ID unknown : ' + req.params.id)
+    try {
+        await User.findOneAndUpdate(
+            {_id: req.params.id},
+            {
+                $set: {
+
+                }
+            }
+        )
+    }
+}*/
 
 //setting up signup function
 //salted 10 times to create a user object with the email in the req body and a hashed password
@@ -53,19 +88,21 @@ exports.login = (req, res, next) => {
                     if(!valid){
                         return res.status(401).json({message: 'Mot de passe incorrect :(' });
                     }
+                    const token = createToken(user._id);
+                    //JWT stored in cookie
+                    res.cookie('jwt', token, { httpOnly: true, maxAge})
                     res.status(200).json({
                         userId: user._id,
-                        token: jwt.sign(
-                            { userId: user._id },
-                            'RANDOM_TOKEN_SECRET',
-                            { expiresIn: '24h'}
-                        ),
                      });
                 })
                 .catch(error => res.status(500).json({ error }))
             })
         
         .catch(error => res.status(500).json({ error }))
+
+};
+
+exports.logout= (req, res, next) => {
 
 };
 
