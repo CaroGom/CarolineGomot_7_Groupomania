@@ -8,7 +8,7 @@ const app = require('./app');
 
 //Setting up listening port
 app.listen(process.env.PORT, () => {
-    console.log(`Listening on port ${process.env.PORT || 3000}`);
+    console.log(`Listening on port ${process.env.PORT}`);
 })
 
 
