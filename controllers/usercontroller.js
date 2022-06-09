@@ -60,6 +60,7 @@ exports.deleteUser = async (req, res) => {
 //salted 10 times to create a user object with the email in the req body and a hashed password
 exports.signup = async(req, res) => {
     console.log(req.body);
+    
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
         const user = new User({
@@ -102,7 +103,8 @@ exports.login = (req, res, next) => {
 
 };
 
-exports.logout= (req, res, next) => {
-
+exports.logout = (req, res) => {
+    res.cookie('jwt', '', { maxAge: 1 });
+    res.redirect('/');
 };
 

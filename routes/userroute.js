@@ -6,6 +6,8 @@ const userCtrl = require('../controllers/usercontroller.js');
 //routes POST signup and login
 router.post('/signup', userCtrl.signup);
 router.post('/login', userCtrl.login);
+
+//route GET logout
 router.get('/logout', userCtrl.logout);
 
 //routes GET users overview

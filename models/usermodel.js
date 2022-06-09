@@ -11,12 +11,12 @@ const userSchema = new mongoose.Schema(
             validate: [isEmail],
             lowercase: true,
             unique: true,
-            trimp: true,
+            trim: true,
         },
         password: {
             type : String, 
             required : true,
-            minLength : 6,
+            minlength : 6,
             max: 1024,
         },
         likes: {
