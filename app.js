@@ -10,6 +10,7 @@ const {checkUser, requireAuth}= require('./middlewares/authmiddleware')
 //setting up routes
 
 const UserRoutes = require('./routes/userroute');
+const PostRoutes = require('./routes/postroute');
 
 const app = express();
 
@@ -17,7 +18,7 @@ const app = express();
 
 app.use(express.json());
 app.use(bodyparser.json());
-app.use(bodyparser.urlencoded({extended: true}))
+app.use(bodyparser.urlencoded({extended: true}));
 app.use(cookieParser());
 
 //jwt
@@ -28,5 +29,5 @@ app.get('/jwtid', requireAuth, (req, res) => {
 
 //calling routes
 app.use ('/api/auth', UserRoutes);
-
+app.use ('/api/post', PostRoutes);
 module.exports = app;

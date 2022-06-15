@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const ObjectID = require('mongoose').Types.ObjectId;
 const User = require('../models/usermodel');
+const { signupErrors, signInErrors } = require('../utils/errors.utils');
 const maxAge = 3*24*60*60*1000;
 const createToken = (id) =>{
     return  jwt.sign(
@@ -59,9 +60,21 @@ exports.deleteUser = async (req, res) => {
 //setting up signup function
 //salted 10 times to create a user object with the email in the req body and a hashed password
 exports.signup = async(req, res) => {
+    const {email, password} = req.body;
     console.log(req.body);
+
+    try{
+        const user = await User.create({email, password});
+        res.status(201).json({ user: user._id });
+    }
+
+    catch(err) {
+        const errors = signupErrors(err);
+        res.status(400).send({ errors })
+    }
+
     
-    bcrypt.hash(req.body.password, 10)
+   /*bcrypt.hash(req.body.password, 10)
     .then(hash => {
         const user = new User({
             email: req.body.email,
@@ -69,17 +82,34 @@ exports.signup = async(req, res) => {
         })
         user.save()
             .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-            .catch(error => res.status(400).json({ error }));
+            .catch(errors => res.status(400).json({ errors }));
     })
-    .catch(error => res.status(500).json({ error }))
-
+    .catch(errors =>  res.status(500).json({ errors }))
+*/
 };
 
 
 //setting up login function, bcrypt compares registered hash with req body password hashed
 //assigning a token to the user upon successful connection for 24h
-exports.login = (req, res, next) => {
-    User.findOne({email : req.body.email})
+exports.signIn = async (req, res) => {
+    
+    const { email, password } = req.body
+    console.log(req.body)
+    
+
+    try{
+        const user = await User.login(email, password);
+        const token = createToken(user._id);
+         //JWT stored in cookie
+        res.cookie('jwt', token, { httpOnly: true, maxAge})
+        res.status(200).json({ user: user._id })
+    } catch (err){
+        const errors = signInErrors(err);
+        res.status(400).json({ errors });
+    }
+
+}
+    /*User.findOne({email : req.body.email})
         .then(user => {
             if(!user){
                 return res.status(401).json({message: 'Utilisateur non trouvé :(' });
@@ -102,6 +132,7 @@ exports.login = (req, res, next) => {
         .catch(error => res.status(500).json({ error }))
 
 };
+*/
 
 exports.logout = (req, res) => {
     res.cookie('jwt', '', { maxAge: 1 });
