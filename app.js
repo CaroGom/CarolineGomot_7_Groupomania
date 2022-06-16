@@ -27,7 +27,11 @@ app.get('/jwtid', requireAuth, (req, res) => {
     res.status(200).send(res.locals.user._id);
 })
 
+//img management
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
 //calling routes
 app.use ('/api/auth', UserRoutes);
 app.use ('/api/post', PostRoutes);
+
 module.exports = app;

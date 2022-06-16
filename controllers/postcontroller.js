@@ -1,7 +1,11 @@
 const Post = require('../models/postmodel');
 const bodyparser = require('body-parser');
 const User = require('../models/usermodel');
+const { uploadErrors } = require('../utils/errors.utils');
 const ObjectID = require('mongoose').Types.ObjectId;
+const fs = require('fs');
+const { promisify } = require('util');
+const pipeline = promisify(require('stream').pipeline);
 
 exports.readPost = (req, res) => {
     Post.find((err, docs) => {
@@ -11,14 +15,57 @@ exports.readPost = (req, res) => {
 };
 
 exports.createPost = async (req, res) => {
+    console.log(req.body.posterId)
+     
+
+    const newPost = new Post({
+    
+        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        posterId: req.body.posterId,
+        likers: [],
+        comments: [],
+
+
+    })
+    /*let fileName;
+
+    if (req.file !== null) {
+        try{
+            if(
+                req.file.detectedMimeType !== "image/jpg" &&
+                req.file.detectedMimeType !== "image/png" &&
+                req.file.detectedMimeType !== "image/jpeg" 
+                 
+            )
+
+                throw Error("invalid file");
+
+            if (req.file.size > 500000) throw Error("max size");
+        } catch(err) {
+            const errors = uploadErrors(err);
+            return res.status(201).json({ errors });
+        }
+
+        fileName = req.body.posterId + Date.now() + '.jpg';
+        console.log(fileName)
+
+        await pipeline(
+            req.file.stream,
+            fs.createWriteStream(
+                `${_dirname}/../client/public/uploads/posts/${filename}`
+            )
+        )
+    }
+
     const newPost = new Post(
         {
             posterId: req.body.posterId,
             message: req.body.message,
+            picture: req.file !== null ? "./uploads/posts/" + fileName : "",
             likers: [],
             comments: [],
         });
-
+*/
     try {
         const post = await newPost.save();
         return res.status(201).json(post);
@@ -177,6 +224,24 @@ exports.editCommentPost = (req, res) => {
 exports.deleteCommentPost = (req, res) => {
     if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("ID unknown : " + req.params.id);
+
+    try{
+        return Post.findByIdAndUpdate(
+            req.params.id,
+            {
+                $pull: {
+                    comments: {
+                        _id: req.body.commentId,
+                    }
+                }
+            },
+            { new: true }
+        )
+        .then((docs) => res.send(docs))
+        .catch((err) => res.status(400).send({ message : err }));
+    } catch (err){
+        return res.status(400).json({message : err});
+    }
    
 }
 
