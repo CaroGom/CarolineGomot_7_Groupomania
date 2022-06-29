@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
-const bodyparser = require('body-parser');
+
 const cookieParser = require('cookie-parser');
 const express = require('express');
 const path = require('path');
-require('dotenv').config({path : './config/.env'});
+const dotenv = require("dotenv");
+dotenv.config();
 require('./config/db');
+
 const {checkUser, requireAuth}= require('./middlewares/authmiddleware')
 
 //setting up routes
@@ -12,8 +14,21 @@ const {checkUser, requireAuth}= require('./middlewares/authmiddleware')
 const UserRoutes = require('./routes/userroute');
 const PostRoutes = require('./routes/postroute');
 
-const app = express();
 
+
+
+/*
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    next();
+  });
+
+app.use(cors());
+*/
 //setting up POST routes
 
 app.use(express.json());
