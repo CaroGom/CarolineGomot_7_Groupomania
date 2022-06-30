@@ -91,6 +91,24 @@ exports.signup = async(req, res) => {
 
 //setting up login function, bcrypt compares registered hash with req body password hashed
 //assigning a token to the user upon successful connection for 24h
+
+exports.signIn = async (req, res) => {
+    console.log(req.body);
+    const { email, password } = req.body;
+  
+    try {
+      const user = await User.login(email, password);
+      const token = createToken(user._id);
+      //JWT stored in cookie
+      res.cookie("jwt", token, { httpOnly: true, maxAge });
+      res.status(200).send({ user: user._id });
+    } catch (err) {
+      const errors = signInErrors(err);
+      console.log(err);
+      res.status(400).send({ errors });
+    }
+  };
+  /*
 exports.signIn = async (req, res) => {
     
     const { email, password } = req.body
@@ -102,13 +120,15 @@ exports.signIn = async (req, res) => {
         const token = createToken(user._id);
          //JWT stored in cookie
         res.cookie('jwt', token, { httpOnly: true, maxAge})
-        res.status(200).json({ user: user._id })
+        
+        res.status(200).send({ user: user._id })
+
     } catch (err){
         const errors = signInErrors(err);
         res.status(200).json({ errors });
     }
 
-}
+}*/
     /*User.findOne({email : req.body.email})
         .then(user => {
             if(!user){

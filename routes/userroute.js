@@ -1,18 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const userCtrl = require('../controllers/usercontroller.js');
+const cors = require('cors');
 
 
 //routes POST signup and login
-router.post('/signup', userCtrl.signup);
-router.post('/login', userCtrl.signIn);
+router.post("/signup", cors(), userCtrl.signup);
+router.post("/login", cors(), userCtrl.signIn);
 
 //route GET logout
-router.get('/logout', userCtrl.logout);
+router.get("/logout", cors(), userCtrl.logout);
 
 //routes GET users overview
-router.get('/', userCtrl.getAllUsers);
-router.get('/:id', userCtrl.userInfo);
-router.delete('/:id', userCtrl.deleteUser);
+router.get("/", cors(), userCtrl.getAllUsers);
+router.get("/:id", cors(), userCtrl.userInfo);
+router.delete("/:id", cors(), userCtrl.deleteUser);
 
-module.exports = router; 
+module.exports = router;
