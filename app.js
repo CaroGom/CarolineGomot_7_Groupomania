@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
-
+const bodyparser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const express = require('express');
 const path = require('path');
 const dotenv = require("dotenv");
 dotenv.config();
 require('./config/db');
+const cors = require('cors');
 
 const {checkUser, requireAuth}= require('./middlewares/authmiddleware')
 
@@ -15,20 +16,21 @@ const UserRoutes = require('./routes/userroute');
 const PostRoutes = require('./routes/postroute');
 
 
+const app = express();
+
+const corsOptions = {
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+    'allowedHeaders': ['sessionId', 'Content-Type'],
+    'exposedHeaders': ['sessionId'],
+    'methods': 'GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS',
+    'preflightContinue': false
+};
 
 
-/*
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    next();
-  });
 
-app.use(cors());
-*/
+app.use(cors(corsOptions));
+
 //setting up POST routes
 
 app.use(express.json());

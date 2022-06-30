@@ -1,5 +1,5 @@
 const Post = require('../models/postmodel');
-const bodyparser = require('body-parser');
+
 const User = require('../models/usermodel');
 const { uploadErrors } = require('../utils/errors.utils');
 const ObjectID = require('mongoose').Types.ObjectId;

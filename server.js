@@ -3,8 +3,39 @@ const express = require ('express');
 require('./config/db');
 require('dotenv').config({path: './config/.env'});
 const cors = require('cors');
-const app = express();
+const app = require('./app');
 
+
+/*const corsOptions = {
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+    'allowedHeaders': ['sessionId', 'Content-Type'],
+    'exposedHeaders': ['sessionId'],
+    'methods': 'GET, HEAD, PUT, PATCH, POST, DELETE',
+    'preflightContinue': false
+};
+
+
+
+app.use(cors(corsOptions));*/
+//Setting up listening port
+app.listen(process.env.PORT, () => {
+    console.log(`Listening on port ${process.env.PORT}`);
+})
+
+
+/*app.use((req, res, next) => {
+    //allowing the website I want 
+      res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+    //requesting headers I wish to allow
+      res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
+    //requesting methods of requests I wish to allow
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+      next();
+    });
+
+*/
 
 
 /*app.use(function(req, res, next) {
@@ -34,34 +65,5 @@ const app = express();
         next();
     }
 });*/
-
-const corsOptions = {
-    origin: 'http://localhost:3000',
-    credentials: true,
-    'allowedHeaders': ['sessionId', 'Content-Type'],
-    'exposedHeaders': ['sessionId'],
-    'methods': 'GET, HEAD, PUT, PATCH, POST, DELETE',
-    'preflightContinue': false
-};
-
-/*app.use((req, res, next) => {
-    //allowing the website I want 
-      res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-      res.setHeader('Access-Control-Allow-Credentials', 'true');
-    //requesting headers I wish to allow
-      res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
-    //requesting methods of requests I wish to allow
-      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-      next();
-    });
-
-*/
-
-app.use(cors(corsOptions));
-//Setting up listening port
-app.listen(process.env.PORT, () => {
-    console.log(`Listening on port ${process.env.PORT}`);
-})
-
 
 
