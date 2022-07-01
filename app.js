@@ -23,6 +23,12 @@ app.use(cookieParser());
 
 app.get("/", (req, res) => res.send("hello"));
 
+//jwt
+app.get('*', checkUser);
+app.get('/jwtid', requireAuth, (req, res) => {
+    res.status(200).send(res.locals.user._id);
+})
+
 //img management
 app.use("/images", express.static(path.join(__dirname, "images")));
 

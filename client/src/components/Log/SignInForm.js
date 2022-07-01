@@ -96,7 +96,7 @@ export default SignInForm;
         url: `${process.env.REACT_APP_API_URL}api/auth/login`,
         withCredentials: true, 
         headers:{
-            "Access-Control-Allow-Origin":"*"
+            "Access-Control-Allow-Origin":"http://localhost:3001"
         },
         data : {
             email, 
