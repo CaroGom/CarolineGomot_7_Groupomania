@@ -60,18 +60,25 @@ exports.deleteUser = async (req, res) => {
 //setting up signup function
 //salted 10 times to create a user object with the email in the req body and a hashed password
 exports.signup = async(req, res) => {
-    bcrypt.hash(req.body.password, 10)
-    .then(hash => {
-        const user = new User({
-            email: req.body.email,
-            password: hash,
-        })
-        user.save()
-            .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-            .catch(errors => res.status(400).json({ errors }));
-    })
-    .catch(errors =>  res.status(500).json({ errors }))
+    const {email, password} = req.body;
+    console.log(req.body);
 
+    const users = await User.find().select('-password');
+    if (users.length === 0) {
+        user.admin = true
+    }
+    try{
+        const user = await User.create({email, password});
+        
+        res.status(201).json({ user: user._id });
+        console.log(User)
+        
+    }
+
+    catch(err) {
+        const errors = signupErrors(err);
+        res.status(200).send({ errors })
+    }
 
     
    /*bcrypt.hash(req.body.password, 10)
@@ -85,22 +92,6 @@ exports.signup = async(req, res) => {
             .catch(errors => res.status(400).json({ errors }));
     })
     .catch(errors =>  res.status(500).json({ errors }))
-
-    ____________________
-
-
-        const {email, password} = req.body;
-    console.log(req.body);
-
-    try{
-        const user = await User.create({email, password});
-        res.status(201).json({ user: user._id });
-    }
-
-    catch(err) {
-        const errors = signupErrors(err);
-        res.status(200).send({ errors })
-    }
 */
 };
 
@@ -109,38 +100,34 @@ exports.signup = async(req, res) => {
 //assigning a token to the user upon successful connection for 24h
 
 exports.signIn = async (req, res) => {
-
-    User.findOne({where: { email: req.body.email}})
-    .then(user => {
-        //Retourne une erreur si l'utilisateur n'existe pas
-        if (!user) {
-            return res.status(404).json({error: 'User not found.'});
+    console.log(req.body);
+    const { email, password } = req.body;
+  
+    try {
+      const user = await User.login(email, password);
+      const token = createToken(user._id);
+      //JWT stored in cookie
+      //res.cookie("jwt", token, { httpOnly: true, maxAge });
+      res.status(200).send({ 
+        user: user._id,
+        email: user.email,
+        admin: user.admin,
+        token: jwt.sign({
+            user: user._id,
+            admin: user.admin,
+        },
+        `${process.env.RANDOM_TOKEN_SECRET}`,
+        {
+            expiresIn: '24h'
         }
-        //Comparaison du hash stocké dans la BDD et du mot de passe renseigné à la connexion
-        bcrypt.compare(req.body.password, user.password)
-            .then(valid => {
-                //Retourne une erreur si le mot de passe est incorrect
-                if(!valid) {
-                    return res.status(403).json({error: 'Incorrect password!'});
-                }
-                //Retourne le userId et un token valable pendant 24h si le mot de passe est correct
-                res.status(200).json({
-                    userId: user.id,
-                    token: jwt.sign(
-                        { userId: user.id},
-                        'RANDOM_TOKEN_SECRET',
-                        { expiresIn: '24h'}
-                    )
-                   
-                });
-            })
-            .catch(error => res.status(500).json({error: 'Password comparison failed.'}));
-    })
-    .catch(error => res.status(404).json({error: 'User not found.'}));
-};
-
-
-   
+        )
+     });
+    } catch (err) {
+      const errors = signInErrors(err);
+      console.log(err);
+      res.status(400).send({ errors });
+    }
+  };
   /*
 exports.signIn = async (req, res) => {
     
@@ -160,26 +147,6 @@ exports.signIn = async (req, res) => {
         const errors = signInErrors(err);
         res.status(200).json({ errors });
     }
-
-
-
-
-
-     console.log(req.body);
-    const { email, password } = req.body;
-  
-    try {
-      const user = await User.login(email, password);
-      const token = createToken(user._id);
-      //JWT stored in cookie
-      res.cookie("jwt", token, { httpOnly: true, maxAge });
-      res.status(200).send({ user: user._id });
-    } catch (err) {
-      const errors = signInErrors(err);
-      console.log(err);
-      res.status(400).send({ errors });
-    }
-  };
 
 }*/
     /*User.findOne({email : req.body.email})

@@ -29,6 +29,7 @@ const handleLogin = (e) => {
           emailError.innerHTML = res.data.errors.email;
           passwordError.innerHTML = res.data.errors.password;
       } else {
+        localStorage.setItem('token', JSON.stringify(res.data))
           window.location = '/';
       }
   })
