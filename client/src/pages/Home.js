@@ -2,8 +2,11 @@ import React from 'react';
 
 const Home = () => {
     return (
-        <div>
-            Hello depuis Home
+        <div className='home'>
+            <div className='main'>
+        Thread
+            </div>
+            
         </div>
     );
 };
