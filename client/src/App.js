@@ -14,12 +14,14 @@ const App = () => {
         const fetchToken = async () => {
             await axios({
                 method: "GET",
-                url:`${process.env.REACT_APP_API_URL}jwtid`,
+                url:`${process.env.REACT_APP_API_URL}`,
+              
                 
             })
             .then((res) => {
-                console.log(res)
-                setUid(res.data)})
+                console.log(res.data)
+                console.log(localStorage.getItem('token'))
+                setUid(localStorage.getItem('userId'))})
             .catch((err) => console.log("No token"))
         }
         fetchToken();
@@ -74,4 +76,8 @@ export default App;
         }
         fetchToken();
     }, [uid])
+
+    headers: {
+                    'Authorization': `Bearer ${token}`, 
+                    'Content-Type': 'application/json' }
     */
