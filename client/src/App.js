@@ -22,8 +22,8 @@ const App = () => {
                 
             })
             .then((res) => {
-                console.log(res.data)
-                console.log(localStorage.getItem('token'))
+                /*console.log(res.data)
+                console.log(localStorage.getItem('token'))*/
                 setUid(localStorage.getItem('userId'))})
             .catch((err) => console.log("No token"))
         }

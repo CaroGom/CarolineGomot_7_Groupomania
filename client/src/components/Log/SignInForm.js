@@ -30,8 +30,8 @@ const handleLogin = (e) => {
           passwordError.innerHTML = res.data.errors.password;
       } else {
         localStorage.setItem('userdata', JSON.stringify(res.data))
-        localStorage.setItem('token', JSON.stringify(res.data.token))
-        localStorage.setItem('userId', JSON.stringify(res.data.user))
+        localStorage.setItem('token', (res.data.token))
+        localStorage.setItem('userId', (res.data.user))
           window.location = '/';
       }
   })
