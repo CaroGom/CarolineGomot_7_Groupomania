@@ -2,29 +2,28 @@ import React, { useEffect, useState, useContext, createContext } from 'react';
 import { UidContext } from './components/AppContext';
 import Routes from "./components/Routes";
 
-//import axios from "axios";
+import axios from "axios";
 
 
 
 const App = () => {
     
-    const [uid, setUid] = useState(null);
+    const [uid, setUid]= useState(null);
 
-    useContext(() => {
+    useEffect( () => {
         const fetchToken = async () => {
-
-            await fetch(`${process.env.REACT_APP_API_URL}jwtid`)
-                .then(res => res.json())
-                .then((res) => {
-                console.log(res);
-                setUid(res.data);
-                })
+            await axios({
+                method: "GET",
+                url:`${process.env.REACT_APP_API_URL}jwtid`,
                 
-                .catch((err) => console.log(err, "pas de token"))
+            })
+            .then((res) => {
+                console.log(res)
+                setUid(res.data)})
+            .catch((err) => console.log("No token"))
         }
         fetchToken();
-    }, [uid]); 
-
+    }, [uid])
 
     return (
         <UidContext.Provider value ={uid}>

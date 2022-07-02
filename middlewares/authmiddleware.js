@@ -1,8 +1,30 @@
 const jwt = require('jsonwebtoken');
-const cookieParser = require('cookie-parser');
+//const cookieParser = require('cookie-parser');
 const User = require('../models/usermodel');
 
 
+module.exports = (req, res, next) => {
+    try{
+        //return array with bearer as first element and token as second element
+        const token = req.headers.authorization.split(' ')[1];
+        //decode the token
+        const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+        //taking userId from decodedToken
+        const userId = decodedToken.userId;
+        //assign userId as an attribute to request
+        req.auth = {userId: userId};
+        //verification that decoded token matches reques body token
+        if (req.body.userId && req.body.userId !== userId){
+            throw 'Identifiant utilisateur non valable !'
+        }
+        else{
+            next();
+        }
+    } catch(error) {
+        res.status(401).json({error: error | "Problème d'authentification !"})
+    }
+}
+/*
 module.exports.checkUser = (req, res, next) => {
     try{
         //return array with bearer as first element and token as second element
@@ -47,3 +69,5 @@ module.exports.requireAuth = (req, res, next) => {
         console.log('No token');
     }
 };
+
+*/

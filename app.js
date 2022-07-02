@@ -13,8 +13,16 @@ const UserRoutes = require("./routes/userroute");
 const PostRoutes = require("./routes/postroute");
 
 const app = express();
+const corsOptions = {
+    origin: 'http://localhost:3001',
+    credentials: true,
+    'allowedHeaders': ['sessionId', 'Content-Type', 'Access-Control-Allow-Origin'],
+    'exposedHeaders': ['sessionId'],
+    'methods': 'GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS',
+    'preflightContinue': false
+};
 
-app.use(cors());
+app.use(cors(corsOptions));
 
 //setting up POST routes
 
@@ -24,11 +32,12 @@ app.use(cookieParser());
 app.get("/", (req, res) => res.send("hello"));
 
 //jwt
+/*
 app.get('*', checkUser);
 app.get('/jwtid', requireAuth, (req, res) => {
     res.status(200).send(res.locals.user._id);
 })
-
+*/
 //img management
 app.use("/images", express.static(path.join(__dirname, "images")));
 
