@@ -42,7 +42,7 @@ const Thread = () => {
                   updatedAt={item.updatedAt}
                   posterId={item.posterId}
                   posterEmail={item.posterEmail}
-                 
+                  admin={item.admin}
                   image={item.image}
                   message={item.message}
                   likers={item.likers}

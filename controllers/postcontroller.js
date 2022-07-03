@@ -84,6 +84,7 @@ exports.updatePost = (req, res) => {
         image: req.file !== undefined ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : "",
         message: req.body.message
     }
+    //`http://localhost:${process.env.PORT_FRONT}/uploads/profil/` + req.file.filename
     Post.findByIdAndUpdate(
         req.params.id,
         { $set: updatedRecord },

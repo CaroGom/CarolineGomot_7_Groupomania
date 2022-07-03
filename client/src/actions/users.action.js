@@ -10,7 +10,7 @@ export const getUsers = () => {
         })
         .catch((err)=> console.log(err))
     })
-   
+  
 }
 
 export default getUsers;
