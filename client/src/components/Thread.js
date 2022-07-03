@@ -30,6 +30,34 @@ const Thread = () => {
             {postArray.length > 0 ? (
             <ul >
               {postArray.map((item) => (
+                <Card>
+                    item={item}
+                  key={'id' + item._id}
+                  
+                  createdAt={item.createdAt}
+                  updatedAt={item.updatedAt}
+                  userId={item.posterId}
+                  imagePost={item.image}
+                  description={item.message}
+                  likes={item.likes}
+                  </Card>
+              ))}
+            </ul>
+          ) : (
+            <section id="publications" className="no feed">
+              <p className="4">Aucune publication</p>
+            </section>
+          )}
+        </div>
+    )
+}
+
+export default Thread;
+
+/*        <div className='thread-container'>
+            {postArray.length > 0 ? (
+            <ul >
+              {postArray.map((item) => (
                 <li>
                   key={'id' + item._id}
                   
@@ -49,6 +77,4 @@ const Thread = () => {
           )}
         </div>
     )
-}
-
-export default Thread;
+}*/
