@@ -3,7 +3,9 @@ import { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
-import dateParser, { isEmpty } from '../../utils/Utils';
+import moment from 'moment';
+import 'moment/locale/fr';
+moment.locale('fr');
 
 /*function Card  ({ item })  {
     const [isLoading, setIsLoading] = useState(true);
@@ -61,13 +63,24 @@ export default function Card(props) {
                         <div className="pseudo">
                             
                                 <h3>
-                                {props.posterId}
+                                {props.posterEmail}
                                 </h3>
                             
                         </div>
-
+                            <span>{moment(props.createdAt).format('LLL')}</span>
                     </div>
-
+                    <p>{props.message}</p>
+                   
+                    { props.image ? (
+                    <img src={props.image} 
+                    alt="card-pic" 
+                    className="card-pic" />
+                    ): null}
+                    
+                    <div className="card-footer">
+                      <h6>Like button</h6>
+                      
+                      </div>
                 </div>
             
         </li>

@@ -41,6 +41,7 @@ const Thread = () => {
                   createdAt={item.createdAt}
                   updatedAt={item.updatedAt}
                   posterId={item.posterId}
+                  posterEmail={item.posterEmail}
                  
                   image={item.image}
                   message={item.message}

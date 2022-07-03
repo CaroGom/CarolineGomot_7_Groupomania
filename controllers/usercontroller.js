@@ -64,11 +64,12 @@ exports.signup = async(req, res) => {
     console.log(req.body);
 
     const users = await User.find().select('-password');
-    if (users.length === 0) {
-        user.admin = true
-    }
+    
     try{
         const user = await User.create({email, password});
+        if (users.length === 0) {
+            user.admin = true
+        }
         
         res.status(201).json({ user: user._id });
         console.log(User)
