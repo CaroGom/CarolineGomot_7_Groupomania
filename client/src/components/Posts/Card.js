@@ -27,7 +27,7 @@ export default function Card(props) {
       image: props.image,
     });
     console.log('props', props);
-    console.log('propsID', props._id);
+    console.log('propsID', props.id);
 
     
   const { commentArray, postArray, userInfo } = useSelector((state) => ({
@@ -61,7 +61,7 @@ export default function Card(props) {
                         <div className="pseudo">
                             
                                 <h3>
-                                {props.email}
+                                {props.posterId}
                                 </h3>
                             
                         </div>

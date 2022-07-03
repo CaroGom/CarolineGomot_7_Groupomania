@@ -20,10 +20,12 @@ exports.createPost = async (req, res) => {
 
     const newPost = new Post({
     
-        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        image: req.file !== undefined ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : "",
+        posterEmail: req.body.posterEmail,
         posterId: req.body.posterId,
+        message: req.body.message,
         likers: [],
-        comments: [],
+        //comments: [],
 
 
     })
@@ -79,6 +81,7 @@ exports.updatePost = (req, res) => {
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send("ID unknown : " + req.params.id)
     const updatedRecord = {
+        image: req.file !== undefined ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : "",
         message: req.body.message
     }
     Post.findByIdAndUpdate(
@@ -167,7 +170,7 @@ exports.unlikePost = async (req, res) => {
         return res.status(500).json({message : err});
     }
 };
-
+/*
 exports.commentPost = (req, res) => {
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send("ID unknown : " + req.params.id);
@@ -193,31 +196,59 @@ exports.commentPost = (req, res) => {
         return res.status(400).json({message : err});
     }
 };
-
-exports.editCommentPost = (req, res) => {
-    if (!ObjectID.isValid(req.params.id))
-        return res.status(400).send("ID unknown : " + req.params.id);
-
-    try {
-
-        return Post.findById(req.params.id, (err, docs) => {
-            const theComment = docs.comments.find((comment) => 
-                comment._id.equals(req.body.commentId)
-            );
-           
-            
-            if (!theComment) return res.status(404).send('Comment not found');
-            theComment.text = req.body.text;
-
-            return docs.save((err) =>{
-                if(!err) return res.status(200).send(docs);
-                return res.status(500).send(err);
+exports.editCommentPost = (req, res , next) => {
+    if (!ObjectID.isValid(req.params.id)) {
+        return res.status(400).json('ID Unknown : ' + req.params.id);
+    } else {
+        const id = req.params.id
+        return Post.findById(id,
+          
+            (error, docs) => {
+                const commentId = req.body.commentId
+                const theComment = docs.comments.find((comment) => {
+                    comment._id.equals(commentId)
+                })
+                if(!theComment) {
+                    return res.status(404).send('Comment not found')
+                } else {
+                    const commentText = req.body.text;
+                    theComment.text = commentText;
+                }
+                return docs.save((error) => {
+                    if(!error) {
+                        res.status(2000).docs;
+                    } else {
+                        return res.status(500).send(error);
+                    }
+                })
             }
-            );
+        )
+       /* try {
+            return Post.findById(
+                req.paramas.id,
+                (error, docs) => {
+                    const theComment = docs.comments.find((comment) => {
+                        comment._id.equals(req.body.commentId)
+                    })
+                    if(!theComment) {
+                        return res.status(404).send('Comment not found')
+                    } else {
+                        theComment.text = req.body.text;
+                    }
+                    return docs.save((error) => {
+                        if(!error) {
+                            res.status(2000).docs;
+                        } else {
+                            return res.status(500).send(error);
+                        }
+                    })
+                }
+            )
+        }
+        catch (error) {
+            console.log(error)
+            return res.status(400).send('Coucou');
             }
-        );
-    } catch (err){
-        return res.status(400).json({message : err});
     }
 }
 
@@ -245,3 +276,4 @@ exports.deleteCommentPost = (req, res) => {
    
 }
 
+*/
