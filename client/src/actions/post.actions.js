@@ -12,7 +12,7 @@ export const getPosts = () => {
             
             {
                 headers: {
-                    'Authorization' : `Bearer ` + accessToken.token ,
+                    'Authorization' : `Bearer` + accessToken.token ,
                     
                     },
             })
