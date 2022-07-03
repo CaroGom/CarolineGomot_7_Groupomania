@@ -1,7 +1,7 @@
 import { GET_USER } from "../actions/user.actions";
 
 const initialState = {
-  
+    userArray: [],
 };
 
  function userReducer(state = initialState, action) {

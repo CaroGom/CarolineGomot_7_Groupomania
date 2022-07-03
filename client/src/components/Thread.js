@@ -5,6 +5,7 @@ import { isEmpty } from '../utils/Utils';
 import Card from '../components/Posts/Card'
 
 
+
 const Thread = () => {
     const { postArray,  } = useSelector((state) => ({
         ...state.postReducer,}))
@@ -14,7 +15,7 @@ const Thread = () => {
     const posts = useSelector((state) => state.postReducer);
     
 
-    console.log(posts.postArray);
+    console.log(posts);
 
     useEffect(() => {
         async function allPosts() {
@@ -25,18 +26,26 @@ const Thread = () => {
                 dispatch(getPosts())
             }
         }
-        if (loadPost) {
-            dispatch(getPosts());
-            setLoadPost(false)
-        }
+        
+        allPosts();
     }, [])
     return (
         <div className='thread-container'>
                   {posts.postArray.length > 0 ? (
             <ul >
-              {postArray.map((item) => {
+              {posts.postArray.map((item) => {
               
-                return<Card item={item} key={item._id}/>;
+                return<Card item={item} 
+                key={'id' + item._id}
+                id={item._id}
+                  createdAt={item.createdAt}
+                  updatedAt={item.updatedAt}
+                  posterId={item.posterId}
+                 
+                  image={item.image}
+                  message={item.message}
+                  likers={item.likers}
+                />;
                
 })}
             </ul>

@@ -1,7 +1,7 @@
 import { GET_POSTS } from "../actions/post.actions";
 
 const initialState = {
-   
+   postArray: [],
    
 };
 function postReducer(state = initialState, action) {

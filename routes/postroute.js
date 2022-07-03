@@ -10,13 +10,13 @@ router.post('/', auth, multer, postCtrl.createPost);
 router.put('/:id', auth, multer, postCtrl.updatePost);
 router.delete('/:id', auth, postCtrl.deletePost);
 router.patch('/like-post/:id', auth, postCtrl.likePost);
-router.patch('/unlike-post/:id', postCtrl.unlikePost);
+router.patch('/unlike-post/:id', auth, postCtrl.unlikePost);
 
 //comments
 
-router.patch('/comment-post/:id', postCtrl.commentPost);
-router.patch('/edit-comment-post/:id', postCtrl.editCommentPost);
-router.patch('/delete-comment-post/:id', postCtrl.deleteCommentPost);
+router.patch('/comment-post/:id', auth, postCtrl.commentPost);
+router.patch('/edit-comment-post/:id', auth, postCtrl.editCommentPost);
+router.patch('/delete-comment-post/:id', auth, postCtrl.deleteCommentPost);
 
 //upload
 

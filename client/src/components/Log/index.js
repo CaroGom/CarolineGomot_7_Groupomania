@@ -39,7 +39,7 @@ const Log = (props) => {
                 {signUpModal && <SignUpForm />}
                 {signInModal && <SignInForm />}
             </div>
-            Log
+            
         </div>
     )
 }
