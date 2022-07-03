@@ -1,5 +1,9 @@
-import React from 'react';
-const Card = () => {
+import React from "react";
+import { useState } from "react";
+
+const Card = ({ item }) => {
+    const [isLoading, setIsLoading] = useState(true);
+
     return (
         <div>
             Card
