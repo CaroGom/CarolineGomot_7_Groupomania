@@ -1,7 +1,7 @@
 import { GET_USER } from "../actions/user.actions";
 
 const initialState = {
-    userArray: [],
+  
 };
 
  function userReducer(state = initialState, action) {
@@ -9,7 +9,7 @@ const initialState = {
         case GET_USER:
             return {
                 ...state,
-                userInfo:action.payload,
+                userArray:action.payload,
             }
         default: 
         return state; 

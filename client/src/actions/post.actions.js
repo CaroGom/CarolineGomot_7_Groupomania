@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const token = localStorage.getItem('token');
+const accessToken = JSON.parse(localStorage.getItem('userdata'));
 
 //posts 
 export const GET_POSTS = "GET_POSTS";
@@ -12,12 +12,13 @@ export const getPosts = () => {
             
             {
                 headers: {
-                    'Authorization' : `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                    'Authorization' : `Bearer ` + accessToken.token ,
+                    
                     },
             })
             .then((res) => {
                 dispatch ({ type: GET_POSTS, payload: res.data })
+                console.log(res.data)
             })
             .catch ((err) => console.log(err))
 

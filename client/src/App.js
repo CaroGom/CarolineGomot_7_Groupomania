@@ -14,6 +14,7 @@ const App = () => {
     const dispatch = useDispatch();
 
     useEffect( () => {
+        
         const fetchToken = async () => {
             await axios({
                 method: "GET",

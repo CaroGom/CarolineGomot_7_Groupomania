@@ -11,7 +11,7 @@ const Connexion = () => {
             ) : ( <div className='log-container'>
             <Log signin={true} signup={false} />
             <div className='img-container'>
-                <img src='./img/log.svg' alt='img log'/>
+                <img src='./img/icon.svg' alt='img log'/>
             </div>
         </div> )
          }

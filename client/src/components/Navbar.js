@@ -8,9 +8,10 @@ import Logout from "./Log/LogOut";
 
 const Navbar = () => {
     const uid = useContext(UidContext);
-    const [userData, setUserData] = useState('');
     
-    const accessToken = JSON.parse(localStorage.getItem('userdata')).token;
+    const [userData, setUserData] = useState('');
+
+   /* const accessToken = JSON.parse(localStorage.getItem('userdata')).token;
     const id = JSON.parse(localStorage.getItem('userdata')).user;
 
     useEffect (() => 
@@ -26,6 +27,8 @@ const Navbar = () => {
                 email: res.data.email,
             });
         };
+        console.log(userData.email)
+        console.log(uid)
         infosAxios();
     },
       [id, accessToken]);

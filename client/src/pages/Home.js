@@ -1,10 +1,11 @@
 import React from 'react';
+import Thread from '../components/Thread';
 
 const Home = () => {
     return (
         <div className='home'>
             <div className='main'>
-        Thread
+        <Thread></Thread>
             </div>
             
         </div>
