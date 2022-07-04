@@ -11,15 +11,15 @@ const Navbar = () => {
     
     const [userData, setUserData] = useState('');
 
-   /* const accessToken = JSON.parse(localStorage.getItem('userdata')).token;
-    const id = JSON.parse(localStorage.getItem('userdata')).user;
+   const accessToken = JSON.parse(localStorage.getItem('userdata'));
+    
 
     useEffect (() => 
         {
             const infosAxios = async () => {
-            const res = await axios.get (`${process.env.REACT_APP_API_URL}api/auth/` + id, {
+            const res = await axios.get (`${process.env.REACT_APP_API_URL}api/auth/` + accessToken.user, {
                 headers: {
-                    Authorization: `Bearer ${accessToken}`,
+                    Authorization: `Bearer ${accessToken.token}`,
                     'Content-Type': 'application/json'
                 },
             });
@@ -31,9 +31,8 @@ const Navbar = () => {
         console.log(uid)
         infosAxios();
     },
-      [id, accessToken]);
-        
-  /**/ 
+      [accessToken.id, accessToken.token]);
+
 
 
     return (
@@ -51,7 +50,7 @@ const Navbar = () => {
                     <li></li>
                     <li className="welcome">
                         <NavLink exact to ="/connexion">
-                            <h5>Bienvenue {userData.email} !</h5>
+                            <h5>Bienvenue {userData.email}!</h5>
                         </NavLink>
                     </li>
                     <Logout/>

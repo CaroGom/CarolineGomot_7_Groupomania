@@ -9,8 +9,9 @@ const Logout = () => {
 
     })
     .then (() => { 
-        localStorage.clear();
         window.location = '/connexion';
+        localStorage.clear();
+        
      })
     .catch((err) => console.log(err))
     

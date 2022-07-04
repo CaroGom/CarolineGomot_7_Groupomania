@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPosts } from '../actions/post.actions';
-import { isEmpty } from '../utils/Utils';
+
 import Card from '../components/Posts/Card'
 
 
@@ -11,11 +11,14 @@ const Thread = () => {
         ...state.postReducer,}))
 
     const [loadPost, setLoadPost] = useState(true);
+    const [count, setCount] = useState(5);
     const dispatch = useDispatch();
     const posts = useSelector((state) => state.postReducer);
     
 
     console.log(posts);
+
+    
 
     useEffect(() => {
         async function allPosts() {
@@ -31,13 +34,15 @@ const Thread = () => {
     }, [])
     return (
         <div className='thread-container'>
+
+          <h2>Hello ! <a href="/connexion"  rel="noopener noreferrer"> Connectez-vous </a></h2>
                   {posts.postArray.length > 0 ? (
             <ul >
               {posts.postArray.map((item) => {
               
                 return<Card item={item} 
-                key={'id' + item._id}
-                id={item._id}
+                  key={'id' + item._id}
+                  id={item._id}
                   createdAt={item.createdAt}
                   updatedAt={item.updatedAt}
                   posterId={item.posterId}

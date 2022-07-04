@@ -5,6 +5,7 @@ import axios from 'axios';
 
 import moment from 'moment';
 import 'moment/locale/fr';
+import LikeButton from "./LikeButton";
 moment.locale('fr');
 
 /*function Card  ({ item })  {
@@ -21,7 +22,15 @@ useEffect(() => {
 
 export default function Card(props) {
     const dispatch = useDispatch();
+    const [isUpdated, setIsUpdated]=useState(false);
+    const [textUpdate, setTextUpdate]=useState(null);
+    //const userId=(localStorage.getItem('userId'));
     //const [toggleCmt, setToggleCmt] = useState(false);
+    const token = JSON.parse(localStorage.getItem('userdata'));
+    // const id = JSON.parse(localStorage.getItem('token')).user;
+     console.log(token.user);
+
+ 
     const [post, setPost] = useState({
        
       _id: props._id,
@@ -38,13 +47,14 @@ export default function Card(props) {
     ...state.userReducer,
   }));
 
-  const token = JSON.parse(localStorage.getItem('userdata'));
- // const id = JSON.parse(localStorage.getItem('token')).user;
-  console.log(token.user);
+  console.log(token.user, props.posterId);
+
+  const updateItem = async () => {};
+ 
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}api/post/`, {
-        headers: { Authorization: `Bearer ${token.token}` },
+        headers: { Authorization: `Bearer  ${token.token}` },
       })
       .then((response) => {
         setPost(response.data);
@@ -69,7 +79,16 @@ export default function Card(props) {
                         </div>
                             <span>{moment(props.createdAt).format('LLL')}</span>
                     </div>
-                    <p>{props.message}</p>
+                    {isUpdated ===false && <p>{props.message}</p>}
+                    {isUpdated ==true && (
+                       <div className="update-post">
+                       <textarea
+                      defaultValue={post.message}
+                      onChange={(e) => setTextUpdate(e.target.value)}/>
+                      <div className="button-container">
+                          <button className="btn" onClick={updateItem}>Valider modification</button>
+                      </div>
+                      </div>)}
                    
                     { props.image ? (
                     <img src={props.image} 
@@ -77,8 +96,17 @@ export default function Card(props) {
                     className="card-pic" />
                     ): null}
                     
+                    { token.user == props.posterId && (
+                       <div className="button-container">
+                            <div onClick={() => setIsUpdated(!isUpdated)}>
+                                <img src="./img/icons/edit.svg" alt="edit"/>
+                            </div>
+                       </div>
+                        )
+
+                      }
                     <div className="card-footer">
-                      <h6>Like button</h6>
+                      <LikeButton props = {props}/>
                       
                       </div>
                 </div>

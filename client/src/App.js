@@ -23,8 +23,8 @@ const App = () => {
                 
             })
             .then((res) => {
-                /*console.log(res.data)
-                console.log(localStorage.getItem('token'))*/
+                console.log(res.data)
+                console.log(localStorage.getItem('userId'))
                 setUid(localStorage.getItem('userId'))})
             .catch((err) => console.log("No token"))
         }
@@ -32,6 +32,8 @@ const App = () => {
 
         if(uid) dispatch(getUser(uid))
     }, [uid])
+
+    console.log(uid);
 
     return (
         <UidContext.Provider value ={uid}>
