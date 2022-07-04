@@ -6,9 +6,9 @@ const multer= require('../middlewares/multermiddleware');
 
 
 router.get('/',  postCtrl.readPost);
-router.post('/',  multer, postCtrl.createPost);
-router.put('/:id',   multer, postCtrl.updatePost);
-router.delete('/:id',   postCtrl.deletePost);
+router.post('/', multer, postCtrl.createPost);
+router.put('/:id', multer, postCtrl.updatePost);
+router.delete('/:id', auth, postCtrl.deletePost);
 router.patch('/like-post/:id',   postCtrl.likePost);
 router.patch('/unlike-post/:id',   postCtrl.unlikePost);
 

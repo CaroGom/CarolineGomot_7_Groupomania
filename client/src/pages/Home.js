@@ -10,7 +10,7 @@ const Home = () => {
     console.log(userId.user);
 
     if (!userId) {
-        window.location
+        //window.location
 
     }
 

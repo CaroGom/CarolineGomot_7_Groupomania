@@ -4,6 +4,7 @@ const ObjectID = require('mongoose').Types.ObjectId;
 const User = require('../models/usermodel');
 const { signupErrors, signInErrors } = require('../utils/errors.utils');
 const maxAge = 3*24*60*60*1000;
+require('dotenv').config({path: './config/.env'});
 const createToken = (id) =>{
     return  jwt.sign(
         { id },
@@ -100,35 +101,38 @@ exports.signup = async(req, res) => {
 //setting up login function, bcrypt compares registered hash with req body password hashed
 //assigning a token to the user upon successful connection for 24h
 
-exports.signIn = async (req, res) => {
-    console.log(req.body);
-    const { email, password } = req.body;
+exports.signIn = (req, res) => {
   
-    try {
-      const user = await User.login(email, password);
-      const token = createToken(user._id);
-      //JWT stored in cookie
-      //res.cookie("jwt", token, { httpOnly: true, maxAge });
-      res.status(200).send({ 
-        user: user._id,
-        email: user.email,
-        admin: user.admin,
-        token: jwt.sign({
-            user: user._id,
-            admin: user.admin,
-        },
-        `${process.env.RANDOM_TOKEN_SECRET}`,
-        {
-            expiresIn: '24h'
+        //Accès à l'utilisateur avec l'email contenu dans le corps de la requête
+        User.findOne({ email: req.body.email })
+            .then(user => {
+                //Retourne une erreur si l'utilisateur n'existe pas
+                if (!user) {
+                    return res.status(404).json({error: 'User not found.'});
+                }
+                //Comparaison du hash stocké dans la BDD et du mot de passe renseigné à la connexion
+                bcrypt.compare(req.body.password, user.password)
+                    .then(valid => {
+                        //Retourne une erreur si le mot de passe est incorrect
+                        if(!valid) {
+                            return res.status(403).json({error: 'Incorrect password!'});
+                        }
+                        //Retourne le userId et un token valable pendant 24h si le mot de passe est correct
+                        res.status(200).json({
+                            userId: user.id,
+                            token: jwt.sign(
+                                { userId: user.id, admin : user.admin },
+                                `${process.env.RANDOM_TOKEN_SECRET}`,
+                                { expiresIn: '24h'}
+                            ),
+                            
+                        });
+                    })
+                    .catch(error => res.status(500).json({error: 'Password comparison failed.'}));
+            })
+            .catch(error => res.status(404).json({error: 'User not found.'}));
+
         }
-        )
-     });
-    } catch (err) {
-      const errors = signInErrors(err);
-      console.log(err);
-      res.status(400).send({ errors });
-    }
-  };
   /*
 exports.signIn = async (req, res) => {
     

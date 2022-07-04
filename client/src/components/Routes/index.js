@@ -3,6 +3,7 @@ import React from "react";
 import Home from "../../pages/Home";
 import Connexion from "../../pages/Connexion";
 import Navbar from "../Navbar";
+import Auth from "../../utils/Auth";
 
 const index = () => {
     return (
@@ -10,6 +11,7 @@ const index = () => {
            <Router>
             <Navbar></Navbar>
             <Routes>
+                <Route element ={<Auth/>}/>
                 <Route path="/" element={<Home/>}/>
                 <Route path="/connexion" element={<Connexion/>}/>
             </Routes>

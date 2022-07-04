@@ -1,5 +1,5 @@
 const Post = require('../models/postmodel');
-
+require('dotenv').config({path: './config/.env'});
 const User = require('../models/usermodel');
 const { uploadErrors } = require('../utils/errors.utils');
 const ObjectID = require('mongoose').Types.ObjectId;
@@ -96,16 +96,25 @@ exports.updatePost = (req, res) => {
     )
 };
 
+
 exports.deletePost = (req, res) => {
-    if (!ObjectID.isValid(req.params.id))
-        return res.status(400).send("ID unknown : " + req.params.id)
-    Post.findByIdAndDelete(
-        req.params.id,
-        (err, docs) => {
-            if (!err) res.send(docs);
-            else console.log("Deletion error : " + err);
-        }
-    )
+    console.log( req.params.id )
+    Post.findOne({ _id: req.params.id, userId: req.token.userId })
+    
+        .then(post => {
+            if (post.posterId === req.token.userId  || post.admin === req.token.admin) {
+                console.log(post.posterId)
+                const filename = post.image.split('/images/')[1];
+                fs.unlink(`images/${filename}`, () =>
+                    Post.deleteOne({ _id: req.params.id })
+                        .then(() => res.status(200).json({ message: 'Post supprimé !' }))
+                        .catch(error => res.status(400).json({ error, message: error.message }))
+                );
+            } else {
+                res.status(401).json({ message: 'Vous n\'êtes pas autorisé à supprimer ce post !' });
+            }
+        })
+        .catch(error => res.status(500).json({ error, message: error.message }));
 };
 
 exports.likePost = async (req, res) => {

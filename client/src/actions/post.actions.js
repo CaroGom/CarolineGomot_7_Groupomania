@@ -78,6 +78,11 @@ export function deletePost(postId) {
         return axios ({
             method: 'DELETE',
             url: `${process.env.REACT_APP_API_URL}api/post/` + postId,
+            headers: {
+                Authorization: 'Bearer ' + accessToken.token,
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
             
         })
         .then((res) => {
