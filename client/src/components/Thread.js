@@ -11,7 +11,7 @@ const Thread = () => {
         ...state.postReducer,}))
 
     const [loadPost, setLoadPost] = useState(true);
-    const [count, setCount] = useState(5);
+    
     const dispatch = useDispatch();
     const posts = useSelector((state) => state.postReducer);
     
@@ -35,7 +35,7 @@ const Thread = () => {
     return (
         <div className='thread-container'>
 
-          <h2>Hello ! <a href="/connexion"  rel="noopener noreferrer"> Connectez-vous </a></h2>
+          
                   {posts.postArray.length > 0 ? (
             <ul >
               {posts.postArray.map((item) => {

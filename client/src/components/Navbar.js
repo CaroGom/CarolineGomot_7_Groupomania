@@ -8,7 +8,7 @@ import Logout from "./Log/LogOut";
 
 const Navbar = () => {
     const uid = useContext(UidContext);
-    
+    /*
     const [userData, setUserData] = useState('');
 
    const accessToken = JSON.parse(localStorage.getItem('userdata'));
@@ -34,7 +34,7 @@ const Navbar = () => {
       [accessToken.id, accessToken.token]);
 
 
-
+*/
     return (
         <nav>
             <div className="nav-container">
@@ -50,7 +50,7 @@ const Navbar = () => {
                     <li></li>
                     <li className="welcome">
                         <NavLink exact to ="/connexion">
-                            <h5>Bienvenue {userData.email}!</h5>
+                            <h5>Bienvenue !</h5>
                         </NavLink>
                     </li>
                     <Logout/>

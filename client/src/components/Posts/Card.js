@@ -2,10 +2,11 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-
+import { updatePost } from "../../actions/post.actions";
 import moment from 'moment';
 import 'moment/locale/fr';
 import LikeButton from "./LikeButton";
+import DeleteCard from './DeleteCard';
 moment.locale('fr');
 
 /*function Card  ({ item })  {
@@ -38,7 +39,7 @@ export default function Card(props) {
       image: props.image,
     });
     console.log('props', props);
-    console.log('propsID', props.id);
+    console.log('post', post);
 
     
   const { commentArray, postArray, userInfo } = useSelector((state) => ({
@@ -47,9 +48,17 @@ export default function Card(props) {
     ...state.userReducer,
   }));
 
-  console.log(token.user, props.posterId);
+  console.log(token.user, props.id);
 
-  const updateItem = async () => {};
+  const updateItem =  () => {
+    if (textUpdate) {
+       dispatch(updatePost(
+        props.id, textUpdate
+      ))
+      setIsUpdated(false)
+      
+    }
+  };
  
   useEffect(() => {
     axios
@@ -88,7 +97,8 @@ export default function Card(props) {
                       <div className="button-container">
                           <button className="btn" onClick={updateItem}>Valider modification</button>
                       </div>
-                      </div>)}
+                      </div>
+                      )}
                    
                     { props.image ? (
                     <img src={props.image} 
@@ -101,6 +111,7 @@ export default function Card(props) {
                             <div onClick={() => setIsUpdated(!isUpdated)}>
                                 <img src="./img/icons/edit.svg" alt="edit"/>
                             </div>
+                            <DeleteCard id={props.id}/>
                        </div>
                         )
 
