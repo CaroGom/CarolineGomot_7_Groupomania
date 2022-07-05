@@ -54,7 +54,7 @@ exports.updatePost = (req, res) => {
 
 
 exports.deletePost = (req, res) => {
-    console.log(req.params.id)
+    // console.log(req.params.id)
     Post.findOne({ _id: req.params.id, userId: req.token.userId })
 
         .then(post => {
@@ -73,121 +73,65 @@ exports.deletePost = (req, res) => {
         .catch(error => res.status(500).json({ error, message: error.message }));
 };
 
-exports.likePost = (req, res) => {
 
-   
-    switch (req.body.likes) {
-        case 0:
-            Post.findOne({ _id: req.params.id, userId: req.token.userId })
-                .then(post => {
-                    if (post.likers.includes(req.body.userId)) {
-                        Post.updateOne(
-                            { _id: req.params.id },
-                            {
-                                $pull: { likers: req.body.userId },
-                            }
-                        )
-                            .then(() => res.status(200).json({ message: "Post no longer liked !" }))
-                            .catch(error => res.status(400).json({ error }))
-                        //if sauce was disliked, no longer disliking it
-                    }
-                }
-                )
-                .catch(error => res.status(404).json({ error }))
-            break;
 
-        //if a user likes a sauce = putting the count to 1
-        case 1: Post.findOne({ _id: req.params.id })
-            .then(post => {
-                //did they already like it
+exports.likePost = async (req, res, next) => {
+    if (!ObjectID.isValid(req.params.id)) {
+        return res.status(400).json('ID Unknown : ' + req.params.id);
+    } else {
+        try {
+            await Post.findByIdAndUpdate(
+                req.params.id,
                 {
-                    Post.updateOne(
-                        { _id: req.params.id },
-                        {
-                            //$inc: {likes: 1},
-                            $push: { likers: req.body.userId },
-                        }
-                    )
-                        .then(() => res.status(200).json({ message: "post liked !" }))
-                        .catch(error => res.status(400).json({ error }))
-                }
-            })
-            .catch(error => res.status(404).json({ error }))
-            break;
+                    $addToSet: { likers: req.body.id }
+                },
+                { new : true },
+            );
+            await Post.findByIdAndUpdate(
+                req.body.id,
+                {
+                    $addToSet: { likes: req.params.id}
+                },
+                { new : true },
+            )
+            return res.status(200).send('like');
+        }
+        catch (error) {
+            console.log(error)
+            return res.status(400).send(error);
+        }
     }
-   
-    break;
 }
 
 
 
-
-/*
-exports.likePost = async (req, res) => {
-    if (!ObjectID.isValid(req.params.id))
-        return res.status(400).send("ID unknown : " + req.params.id);
-    try {
-        await Post.findByIdAndUpdate(
-            req.params.id,
-            {
-                $addToSet: { likers: req.body.id }
-            },
-            { new: true },
-            /*(err, docs) => {
-                if (err) return res.status(400).send(err);
-            }
-        );
-        await User.findByIdAndUpdate(
-            req.body.id,
-            {
-                $addToSet: { likes: req.params.id }
-            },
-            { new: true },
-            /*(err, docs) => {
-                if (!err) res.send(docs);
-                else return res.status(400).send(err);
-            }
-        )
-        .then((docs) => res.send(docs))
-        .catch((err) => res.status(500).send({ message : err }));
-    } catch (err) {
-        return res.status(500).json({message : err});
+exports.unlikePost = async (req, res, next) => {
+    if (!ObjectID.isValid(req.params.id)) {
+        return res.status(400).json('ID Unknown : ' + req.params.id);
+    } else {
+        try {
+            await Post.findByIdAndUpdate(
+                req.params.id,
+                {
+                    $pull: { likers: req.body.id }
+                },
+                { new : true },
+            );
+            await Post.findByIdAndUpdate(
+                req.body.id,
+                {
+                    $pull: { likes: req.params.id}
+                },
+                { new : true },
+            )
+            return res.status(200).send('dislike');
+        }
+        catch (error) {
+            return res.status(400).send(error);
+        }
     }
-};
+}
 
-*/
-
-exports.unlikePost = async (req, res) => {
-    if (!ObjectID.isValid(req.params.id))
-        return res.status(400).send("ID unknown : " + req.params.id);
-    try {
-        await Post.findByIdAndUpdate(
-            req.params.id,
-            {
-                $pull: { likers: req.body.id }
-            },
-            { new: true },
-            /*(err, docs) => {
-                if (err) return res.status(400).send(err);
-            }*/
-        );
-        await User.findByIdAndUpdate(
-            req.body.id,
-            {
-                $pull: { likes: req.params.id }
-            },
-            { new: true },
-            /*(err, docs) => {
-                if (!err) res.send(docs);
-                else return res.status(400).send(err);
-            }*/
-        )
-            .then((docs) => res.send(docs))
-            .catch((err) => res.status(500).send({ message: err }));
-    } catch (err) {
-        return res.status(500).json({ message: err });
-    }
-};
 /*
 exports.commentPost = (req, res) => {
     if (!ObjectID.isValid(req.params.id))

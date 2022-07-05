@@ -9,8 +9,8 @@ router.get('/',  postCtrl.readPost);
 router.post('/', auth, multer, postCtrl.createPost);
 router.put('/:id', auth, multer, postCtrl.updatePost);
 router.delete('/:id', auth, postCtrl.deletePost);
-router.patch('/like-post/:id', auth, postCtrl.likePost);
-//router.patch('/unlike-post/:id', auth,  postCtrl.unlikePost);
+router.patch('/like-post/:id', postCtrl.likePost);
+router.patch('/unlike-post/:id',  postCtrl.unlikePost);
 
 //comments
 /*
