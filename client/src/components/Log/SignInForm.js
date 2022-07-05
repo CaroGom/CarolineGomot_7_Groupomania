@@ -31,8 +31,8 @@ const handleLogin = (e) => {
       } else {
         localStorage.setItem('userdata', JSON.stringify(res.data))
         localStorage.setItem('token', (res.data.token))
-        localStorage.setItem('userId', (res.data.user))
-          window.location = '/';
+        localStorage.setItem('userId', (res.data.userId))
+          window.location = '/home';
       }
   })
   .catch((err) => {

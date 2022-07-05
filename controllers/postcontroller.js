@@ -1,5 +1,5 @@
 const Post = require('../models/postmodel');
-require('dotenv').config({path: './config/.env'});
+require('dotenv').config({ path: './config/.env' });
 const User = require('../models/usermodel');
 const { uploadErrors } = require('../utils/errors.utils');
 const ObjectID = require('mongoose').Types.ObjectId;
@@ -15,66 +15,22 @@ exports.readPost = (req, res) => {
 };
 
 exports.createPost = async (req, res) => {
+
     console.log(req.body.posterId)
-     
+
 
     const newPost = new Post({
-    
+
         image: req.file !== undefined ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : "",
         posterEmail: req.body.posterEmail,
         posterId: req.body.posterId,
         message: req.body.message,
         likers: [],
-        //comments: [],
-
 
     })
-    /*let fileName;
-
-    if (req.file !== null) {
-        try{
-            if(
-                req.file.detectedMimeType !== "image/jpg" &&
-                req.file.detectedMimeType !== "image/png" &&
-                req.file.detectedMimeType !== "image/jpeg" 
-                 
-            )
-
-                throw Error("invalid file");
-
-            if (req.file.size > 500000) throw Error("max size");
-        } catch(err) {
-            const errors = uploadErrors(err);
-            return res.status(201).json({ errors });
-        }
-
-        fileName = req.body.posterId + Date.now() + '.jpg';
-        console.log(fileName)
-
-        await pipeline(
-            req.file.stream,
-            fs.createWriteStream(
-                `${_dirname}/../client/public/uploads/posts/${filename}`
-            )
-        )
-    }
-
-    const newPost = new Post(
-        {
-            posterId: req.body.posterId,
-            message: req.body.message,
-            picture: req.file !== null ? "./uploads/posts/" + fileName : "",
-            likers: [],
-            comments: [],
-        });
-*/
-    try {
-        const post = await newPost.save();
-        return res.status(201).json(post);
-
-    } catch (err) {
-        return res.status(400).send(err);
-    }
+    newPost.save()
+        .then(() => res.status(201).json({ message: 'Post enregistré !' }))
+        .catch(error => res.status(400).json({ error }));
 };
 
 exports.updatePost = (req, res) => {
@@ -98,11 +54,11 @@ exports.updatePost = (req, res) => {
 
 
 exports.deletePost = (req, res) => {
-    console.log( req.params.id )
+    console.log(req.params.id)
     Post.findOne({ _id: req.params.id, userId: req.token.userId })
-    
+
         .then(post => {
-            if (post.posterId === req.token.userId  || post.admin === req.token.admin) {
+            if (post.posterId === req.token.userId || post.admin === req.token.admin) {
                 console.log(post.posterId)
                 const filename = post.image.split('/images/')[1];
                 fs.unlink(`images/${filename}`, () =>
@@ -117,6 +73,56 @@ exports.deletePost = (req, res) => {
         .catch(error => res.status(500).json({ error, message: error.message }));
 };
 
+exports.likePost = (req, res) => {
+
+   
+    switch (req.body.likes) {
+        case 0:
+            Post.findOne({ _id: req.params.id, userId: req.token.userId })
+                .then(post => {
+                    if (post.likers.includes(req.body.userId)) {
+                        Post.updateOne(
+                            { _id: req.params.id },
+                            {
+                                $pull: { likers: req.body.userId },
+                            }
+                        )
+                            .then(() => res.status(200).json({ message: "Post no longer liked !" }))
+                            .catch(error => res.status(400).json({ error }))
+                        //if sauce was disliked, no longer disliking it
+                    }
+                }
+                )
+                .catch(error => res.status(404).json({ error }))
+            break;
+
+        //if a user likes a sauce = putting the count to 1
+        case 1: Post.findOne({ _id: req.params.id })
+            .then(post => {
+                //did they already like it
+                {
+                    Post.updateOne(
+                        { _id: req.params.id },
+                        {
+                            //$inc: {likes: 1},
+                            $push: { likers: req.body.userId },
+                        }
+                    )
+                        .then(() => res.status(200).json({ message: "post liked !" }))
+                        .catch(error => res.status(400).json({ error }))
+                }
+            })
+            .catch(error => res.status(404).json({ error }))
+            break;
+    }
+   
+    break;
+}
+
+
+
+
+/*
 exports.likePost = async (req, res) => {
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send("ID unknown : " + req.params.id);
@@ -129,7 +135,7 @@ exports.likePost = async (req, res) => {
             { new: true },
             /*(err, docs) => {
                 if (err) return res.status(400).send(err);
-            }*/
+            }
         );
         await User.findByIdAndUpdate(
             req.body.id,
@@ -140,7 +146,7 @@ exports.likePost = async (req, res) => {
             /*(err, docs) => {
                 if (!err) res.send(docs);
                 else return res.status(400).send(err);
-            }*/
+            }
         )
         .then((docs) => res.send(docs))
         .catch((err) => res.status(500).send({ message : err }));
@@ -148,6 +154,8 @@ exports.likePost = async (req, res) => {
         return res.status(500).json({message : err});
     }
 };
+
+*/
 
 exports.unlikePost = async (req, res) => {
     if (!ObjectID.isValid(req.params.id))
@@ -174,10 +182,10 @@ exports.unlikePost = async (req, res) => {
                 else return res.status(400).send(err);
             }*/
         )
-        .then((docs) => res.send(docs))
-        .catch((err) => res.status(500).send({ message : err }));
+            .then((docs) => res.send(docs))
+            .catch((err) => res.status(500).send({ message: err }));
     } catch (err) {
-        return res.status(500).json({message : err});
+        return res.status(500).json({ message: err });
     }
 };
 /*

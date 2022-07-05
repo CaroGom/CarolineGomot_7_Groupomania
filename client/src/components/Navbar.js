@@ -39,7 +39,7 @@ const Navbar = () => {
         <nav>
             <div className="nav-container">
                 <div className="logo">
-                    <NavLink exact to ="/"></NavLink>
+                    <NavLink to ="/"></NavLink>
                     <div className="logo">
                         <img src="./img/icon.png" alt = "icon"/>
                         <h3>Groupomania</h3>
@@ -59,7 +59,7 @@ const Navbar = () => {
                 <ul>
                     <li></li>
                     <li> 
-                        <NavLink exact to="/connexion">
+                        <NavLink to="/connexion">
                             <img src="./img/icons/login.svg"/>
                         </NavLink>
                     </li>

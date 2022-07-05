@@ -1,24 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPosts } from '../actions/post.actions';
+import { PostsContext } from './AppContext';
+import Navbar from './Navbar';
 
 import Card from '../components/Posts/Card'
 
 
 
+
 const Thread = () => {
-    const { postArray,  } = useSelector((state) => ({
+   /* const { postArray,  } = useSelector((state) => ({
         ...state.postReducer,}))
 
-    const [loadPost, setLoadPost] = useState(true);
+    const [loadPost, setLoadPost] = useState(true);*/
+
+    const posts =useContext(PostsContext);
     
-    const dispatch = useDispatch();
-    const posts = useSelector((state) => state.postReducer);
+    //const dispatch = useDispatch();
+   // const posts = useSelector((state) => state.postReducer);
     
 
     console.log(posts);
 
-    
+    /*
 
     useEffect(() => {
         async function allPosts() {
@@ -32,28 +37,18 @@ const Thread = () => {
         
         allPosts();
     }, [])
+    */
     return (
+      <>
+      
         <div className='thread-container'>
 
           
-                  {posts.postArray.length > 0 ? (
+                  {posts.length > 0 ? (
             <ul >
-              {posts.postArray.map((item) => {
-              
-                return<Card item={item} 
-                  key={'id' + item._id}
-                  id={item._id}
-                  createdAt={item.createdAt}
-                  updatedAt={item.updatedAt}
-                  posterId={item.posterId}
-                  posterEmail={item.posterEmail}
-                  admin={item.admin}
-                  image={item.image}
-                  message={item.message}
-                  likers={item.likers}
-                />;
-               
-})}
+                <li className='container-card'>
+                  {posts.map((postInfos) => <Card postInfos={postInfos} key={postInfos._id} />)}
+                </li>
             </ul>
           ) : (
             <section id="publications" className="no feed">
@@ -61,8 +56,11 @@ const Thread = () => {
             </section>
           )}
         </div>
+
+        </>
     )
 }
+
 export default Thread;
 
 /*    return (
@@ -91,4 +89,44 @@ export default Thread;
           )}
         </div>
     )
+
+
+    ______________
+
+        return (
+      <>
+      <Navbar/>
+        <div className='thread-container'>
+
+          
+                  {posts.postArray.length > 0 ? (
+            <ul >
+              {posts.postArray.map((item) => {
+              
+                return<Card item={item} 
+                  key={'id' + item._id}
+                  id={item._id}
+                  createdAt={item.createdAt}
+                  updatedAt={item.updatedAt}
+                  posterId={item.posterId}
+                  posterEmail={item.posterEmail}
+                  admin={item.admin}
+                  image={item.image}
+                  message={item.message}
+                  likers={item.likers}
+                />;
+               
+})}
+            </ul>
+          ) : (
+            <section id="publications" className="no feed">
+              <p className="4">Aucune publication</p>
+            </section>
+          )}
+        </div>
+
+        </>
+    )
+}
 }*/ 
+

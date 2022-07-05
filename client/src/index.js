@@ -14,7 +14,7 @@ import store from'./reducers/index';
 const root = createRoot(document.getElementById('root'));
 root.render(
     
-    
+  
 
    <Provider store={store}>
         <App />

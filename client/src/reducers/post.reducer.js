@@ -36,7 +36,7 @@ function postReducer(state = initialState, action) {
 
                 case UPDATE_POST:
                     return state.map((item) => {
-                        if(item.id === action.payload.postId) {
+                        if(item.id === action.payload) {
                             return {
                                 ...item,
                                 message: action.payload.message
@@ -45,7 +45,7 @@ function postReducer(state = initialState, action) {
                         return item;
                     })
                  case DELETE_POST:
-                      return state.filter((item) => item.id !== action.payload.postId)
+                      return state.filter((item) => item.id !== action.payload)
         default: 
         return state;
     }

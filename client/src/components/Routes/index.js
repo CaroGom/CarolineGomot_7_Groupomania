@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Redirect, Switch } from "react-router-dom";
 import React from "react";
+import Accueil from "../Accueil";
 import Home from "../../pages/Home";
 import Connexion from "../../pages/Connexion";
 import Navbar from "../Navbar";
@@ -11,9 +12,12 @@ const index = () => {
            <Router>
             <Navbar></Navbar>
             <Routes>
-                <Route element ={<Auth/>}/>
-                <Route path="/" element={<Home/>}/>
-                <Route path="/connexion" element={<Connexion/>}/>
+                <Route path="/" element={<Accueil/>}/>
+            
+                <Route element={<Auth />}>
+                <Route path="/home" element={<Home />} />
+                <Route path="/connexion" element={<Connexion />} />
+                </Route>
             </Routes>
            </Router>
         </div>

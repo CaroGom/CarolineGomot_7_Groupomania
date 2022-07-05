@@ -3,16 +3,14 @@ import NewPostForm from '../components/Posts/NewPostForm';
 import Thread from '../components/Thread';
 import Log from '../components/Log';
 import { UidContext } from '../components/AppContext';
+import Test from '../components/Posts/ComponentTest';
 
 const Home = () => {
 
     const userId=JSON.parse(localStorage.getItem('userdata'));
-    console.log(userId.user);
+    console.log(userId.userId);
 
-    if (!userId) {
-        //window.location
-
-    }
+  
 
     const uid = useContext(UidContext)
     console.log(uid);
@@ -23,15 +21,15 @@ const Home = () => {
             <div className='main'>
                 <div className = "home-header">
                     
-                    
-                    { userId.user ? <p>Hello</p> : <p>Pas coucou</p>
-                }
+              
+                
+                
 
-                { userId.user ? <NewPostForm/> : <Log signin={true} signup={false}/>
+                { userId.userId ? <NewPostForm/> : <Log signin={true} signup={false}/>
                 }
                 </div>
                     
-                {userId.user ? <Thread/> : <h2>Hello ! <a href="/connexion"  rel="noopener noreferrer"> Connectez-vous </a></h2>}
+                {userId.userId ? <Thread/> : <h2>Hello ! <a href="/connexion"  rel="noopener noreferrer"> Connectez-vous </a></h2>}
  
             </div>
             
