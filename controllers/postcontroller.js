@@ -50,6 +50,7 @@ exports.updatePost = (req, res) => {
             else console.log("Update error : " + err);
         }
     )
+    console.log(res)
 };
 
 
@@ -58,8 +59,8 @@ exports.deletePost = (req, res) => {
     Post.findOne({ _id: req.params.id, userId: req.token.userId })
 
         .then(post => {
-            if (post.posterId === req.token.userId || post.admin === req.token.admin) {
-                console.log(post.posterId)
+            if (post.posterId === req.token.userId || req.token.admin === true) {
+                
                 const filename = post.image.split('/images/')[1];
                 fs.unlink(`images/${filename}`, () =>
                     Post.deleteOne({ _id: req.params.id })
@@ -67,6 +68,7 @@ exports.deletePost = (req, res) => {
                         .catch(error => res.status(400).json({ error, message: error.message }))
                 );
             } else {
+                console.log('test', req.token.admin)
                 res.status(401).json({ message: 'Vous n\'êtes pas autorisé à supprimer ce post !' });
             }
         })
@@ -94,6 +96,7 @@ exports.likePost = async (req, res, next) => {
                 },
                 { new : true },
             )
+           
             return res.status(200).send('like');
         }
         catch (error) {
@@ -102,6 +105,7 @@ exports.likePost = async (req, res, next) => {
         }
     }
 }
+
 
 
 

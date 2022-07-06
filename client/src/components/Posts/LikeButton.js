@@ -12,34 +12,40 @@ function LikeButton(postInfos) {
     const DisplayLike = () => {
         const handleLike = () => {
             const token = localStorage.getItem("token");
-            axios
-                .patch(
-                    `http://localhost:3000/api/post/like-post/${postInfos.postInfos._id}`,
-                    { userId: user.id },
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                )
+            return axios ({
+                method: 'patch',
+                url: `${process.env.REACT_APP_API_URL}api/post/like-post/${postInfos.postInfos._id}`,
+                data: { id: user },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
                 .then((res) => console.log(res.data))
                 .catch((err) => console.log(err));
-            //window.location.reload();
+            window.location.reload();
         };
         const handleUnlike = () => {
             const token = localStorage.getItem("token");
-            axios
-                .patch(`http://localhost:3000/api/post/unlike-post/${postInfos.postInfos._id}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                })
+            return axios ({
+                method: 'patch',
+                url: `${process.env.REACT_APP_API_URL}api/post/unlike-post/${postInfos.postInfos._id}`,
+                data: { id: user },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+
+            })
+                
                 .then((res) => console.log(res.data))
                 .catch((err) => console.log(err));
-            //window.location.reload();
+            
+
+
         };
+
+        console.log(user)
         for (let i = 0; i < postInfos.postInfos.likers.length; i++) {
-            if (postInfos.postInfos.likers[i] === user.id) {
+            if (postInfos.postInfos.likers.includes(user)) {
                 return (
                     <img src="./img/icons/heart-filled.svg" onClick={handleUnlike} alt="like" />
                     )
@@ -48,12 +54,16 @@ function LikeButton(postInfos) {
                         <img src="./img/icons/heart.svg" onClick={handleLike} alt="like" />
                     )
                 }
+           
         }
-        if (postInfos.postInfos.likers !== user.id) {
+        if (postInfos.postInfos.likers.length === 0){
+            return (
+                <img src="./img/icons/heart.svg" onClick={handleLike} alt="like" />
 
-            <img src="./img/icons/heart-filled.svg" onClick={handleUnlike} alt="like" />
+        )}
+      
 
-        }
+        window.location.reload();
     };
 
     // console.log(uid)

@@ -1,6 +1,9 @@
 import axios from "axios";
-
+import { useContext } from "react";
+import { PostsContext } from "../components/AppContext";
 const accessToken = JSON.parse(localStorage.getItem('userdata'));
+//const postContext = useContext(PostsContext);
+//const postId = postContext._id
 
 //posts 
 export const GET_POSTS = "GET_POSTS";
@@ -29,7 +32,7 @@ export const getPosts = () => {
         
     }
 }
-
+/*
 export function likePost(postId, userId) {
     return (dispatch) => {
         return axios ({
@@ -42,8 +45,8 @@ export function likePost(postId, userId) {
         })
         .catch((error) => console.log(error))
     }
-}
-
+}*/
+/*
 export function unlikePost(postId, userId) {
     return (dispatch) => {
         return axios ({
@@ -57,13 +60,20 @@ export function unlikePost(postId, userId) {
         .catch((error) => console.log(error))
     }
 }
-
+*/
+/*
 export function updatePost(postId, message) {
     return (dispatch) => {
         return axios ({
             method: 'put',
             url: `${process.env.REACT_APP_API_URL}api/post/` + postId,
-            data: { message }
+            data: { message },
+            headers: {
+                Authorization: 'Bearer ' + accessToken.token,
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+
         })
         .then((res) => {
             dispatch({type: UPDATE_POST, payload: {message, postId}})
@@ -72,6 +82,7 @@ export function updatePost(postId, message) {
 
 
 }
+*/
 
 export function deletePost(postId) {
     return (dispatch) => {

@@ -22,6 +22,7 @@ const Thread = () => {
     
 
     console.log(posts);
+    console.log(posts.admin)
 
     /*
 

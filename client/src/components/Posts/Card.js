@@ -17,55 +17,25 @@ export default function Card({ postInfos }) {
     const dispatch = useDispatch();
     const user= useContext(UserContext)
     const uid = useContext(UidContext);
+    const [isAdmin, setIsAdmin]=useState(false);
     const [isUpdated, setIsUpdated]=useState(false);
     const [textUpdate, setTextUpdate]=useState(null);
     const token = JSON.parse(localStorage.getItem('userdata'));
    
-console.log('test', postInfos.message)
- 
-    /*const [post, setPost] = useState({
-       
-      _id: props._id,
-      message: props.message,
-      image: props.image,
-    });
-    console.log('props.admin test', props.admin);
-    console.log('post', post);
 
-    
-  const { postArray, userInfo } = useSelector((state) => ({
-    //...state.commentReducer,
-    ...state.postReducer,
-    ...state.userReducer,
-  }));
 
-  console.log(token.userId, props.id);
-*/
+
   const updateItem =  () => {
     if (textUpdate) {
        dispatch(updatePost(
-        postInfos.id, textUpdate
+        postInfos._id, textUpdate
       ))
       setIsUpdated(false)
       
     }
   };
- /*
-  useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}api/post/`, {
-        headers: { Authorization: `Bearer  ${token.token}` },
-      })
-      .then((response) => {
-        setPost(response.data);
-        console.log(response);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [token.token]);
 
-  */
+
 
     return (
 
@@ -100,16 +70,25 @@ console.log('test', postInfos.message)
                     className="card-pic" />
                     ): null}
                     
-                    { token.userId === postInfos.posterId && (
+                    { user.admin === true ? (
+                      <div className="button-container">
+                      <div onClick={() => setIsUpdated(!isUpdated)}>
+                          <img src="./img/icons/edit.svg" alt="edit"/>
+                      </div>
+                      <DeleteCard postInfos={postInfos}/>
+                 </div>
+                    ): token.userId === postInfos.posterId  && (
                        <div className="button-container">
                             <div onClick={() => setIsUpdated(!isUpdated)}>
                                 <img src="./img/icons/edit.svg" alt="edit"/>
                             </div>
                             <DeleteCard postInfos={postInfos}/>
                        </div>
-                        )
+                        ) 
 
                       }
+
+                    
                     <div className="card-footer">
                       <LikeButton postInfos = {postInfos}/>
                       
@@ -120,3 +99,57 @@ console.log('test', postInfos.message)
     )
 }
 
+
+
+/*  { user.admin === true  && (
+                       <div className="button-container">
+                            <div onClick={() => setIsUpdated(!isUpdated)}>
+                                <img src="./img/icons/edit.svg" alt="edit"/>
+                            </div>
+                            <DeleteCard postInfos={postInfos}/>
+                       </div>
+                        )
+
+                      }*/
+
+    /*const [post, setPost] = useState({
+       
+      _id: props._id,
+      message: props.message,
+      image: props.image,
+    });
+    console.log('props.admin test', props.admin);
+    console.log('post', post);
+
+    
+  const { postArray, userInfo } = useSelector((state) => ({
+    //...state.commentReducer,
+    ...state.postReducer,
+    ...state.userReducer,
+  }));
+
+  console.log(token.userId, props.id);
+*/
+
+/*  const updatePost = ({postInfos}) => {
+
+    return axios ({
+      method: 'put',
+      url: `${process.env.REACT_APP_API_URL}api/post/` + postId,
+      data: { message }
+  })
+  .then((res) => console.log(res.data))
+  .catch((err) => console.log('erreur front'))
+      }
+
+
+
+  const updateItem =  () => {
+    if (textUpdate) {
+       updatePost(
+        postInfos.id, textUpdate
+      )
+      setIsUpdated(false)
+      
+    }
+  };*/

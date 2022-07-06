@@ -12,7 +12,7 @@ const DeleteCard = ({postInfos}) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      //window.location.reload();
+    //  window.location.reload();
     };
     return (
         <div onClick={() => {
