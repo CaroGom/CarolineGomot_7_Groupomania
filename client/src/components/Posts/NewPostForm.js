@@ -1,32 +1,52 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {isEmpty} from '../../utils/Utils';
+import { UidContext, UserContext } from '../AppContext';
+import axios from 'axios';
+
 
 const NewPostForm = () => {
     //const [isLoading, setIsLoading]= useState(true)
     const [message, setMessage] = useState("");
     const [postImage, setPostImage] = useState(null);
     const [file, setFile] = useState();
-    const userData = useSelector((state) => state.userReducer)
+    const userData = useContext(UserContext);
+    const uid = useContext(UidContext);
+    const token = localStorage.getItem('token');
     console.log(userData)
     //const userData= JSON.parse(localStorage.getItem('userdata'))
-
-    const handlePost = () => {
-        if (message || postImage) {
-            const data = new FormData();
-            data.append('posterId', userData._id)
-            data.append('message', userData.message)
-        }else {
-            alert('Veuillez saisir un message')
-        }
-
-    }
 
     const handlePicture = (e) => {
         setPostImage(URL.createObjectURL(e.target.files[0]))
         setFile(e.target[0])
     };
 
+   
+    const postData = new FormData();
+
+
+    const handlePost = () => {
+        if (message || postImage) {
+            postData.set('posterEmail', userData.email)
+            postData.set('posterId', userData._id)
+            postData.set('message', message)
+            if (file) postData.append("file",file);
+
+            axios
+            .post("http://localhost:3000/api/post/", postData, {
+             headers: {
+             Authorization: `Bearer ${token}`,
+             'Content-Type': `multipart/form-data`,
+                },
+                })
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err));
+  
+        }else {
+            alert('Veuillez saisir un message')
+        }
+
+    }
 
 
     

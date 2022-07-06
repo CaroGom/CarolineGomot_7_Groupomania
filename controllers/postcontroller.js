@@ -37,10 +37,10 @@ exports.updatePost = (req, res) => {
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send("ID unknown : " + req.params.id)
     const updatedRecord = {
-        image: req.body.data.image !== undefined ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : "",
+        image: req.file !== undefined ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : "",
         message: req.body.data.message
     }
-    console.log('updatesrecord', req.body, req.body.data)
+    console.log('updatesrecord', req.file)
     //`http://localhost:${process.env.PORT_FRONT}/uploads/profil/` + req.file.filename
     Post.findByIdAndUpdate(
         req.params.id,

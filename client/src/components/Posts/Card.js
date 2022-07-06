@@ -23,7 +23,7 @@ export default function Card({ postInfos }) {
     const [textUpdate, setTextUpdate]=useState(null);
     const token = JSON.parse(localStorage.getItem('userdata'));
    
-
+  console.log('condition card', token.userId, '/', postInfos.posterId)
 
    /* const updatePost = (postId, message) => {
 
@@ -74,11 +74,26 @@ export default function Card({ postInfos }) {
                     className="card-pic" />
                     ): null}
                     
-                    
+                    <p>{postInfos.message}</p>
                     
                     <div className="card-footer">
-                    <UpdateCard postInfos={postInfos}/>
-                            <DeleteCard postInfos={postInfos}/>
+
+                    { user.admin === true ? (
+                      <div className="div-btn">
+                      <UpdateCard postInfos={postInfos}/>
+                      <DeleteCard postInfos={postInfos}/>
+                      </div>
+
+                    ): null}
+                    
+                    {token.userId === postInfos.posterId  && (
+                      <div className="div-btn">
+                      <UpdateCard postInfos={postInfos}/>
+                      <DeleteCard postInfos={postInfos}/>
+                      </div>
+       
+                    ) 
+                    }
                       
                       <LikeButton postInfos = {postInfos}/>
                       
