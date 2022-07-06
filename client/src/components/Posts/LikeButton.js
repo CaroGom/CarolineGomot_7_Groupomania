@@ -18,11 +18,12 @@ function LikeButton(postInfos) {
                 data: { id: user },
                 headers: {
                     Authorization: `Bearer ${token}`,
+                    
                 },
             })
                 .then((res) => console.log(res.data))
                 .catch((err) => console.log(err));
-            window.location.reload();
+            //window.location.reload();
         };
         const handleUnlike = () => {
             const token = localStorage.getItem("token");
@@ -33,12 +34,10 @@ function LikeButton(postInfos) {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
-
             })
-                
                 .then((res) => console.log(res.data))
                 .catch((err) => console.log(err));
-            
+            //window.location.reload();
 
 
         };
@@ -56,14 +55,12 @@ function LikeButton(postInfos) {
                 }
            
         }
-        if (postInfos.postInfos.likers.length === 0){
-            return (
-                <img src="./img/icons/heart.svg" onClick={handleLike} alt="like" />
+         if (postInfos.postInfos.likers.length === 0){
+                return (
+                    <img src="./img/icons/heart.svg" onClick={handleLike} alt="like" />
 
-        )}
+            )}
       
-
-        window.location.reload();
     };
 
     // console.log(uid)

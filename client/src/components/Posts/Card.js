@@ -9,6 +9,7 @@ import LikeButton from "./LikeButton";
 import DeleteCard from './DeleteCard';
 import { useContext } from "react";
 import { UidContext, PostsContext, UserContext } from "../AppContext";
+import UpdateCard from "./UpdateCard";
 moment.locale('fr');
 
 
@@ -24,18 +25,31 @@ export default function Card({ postInfos }) {
    
 
 
+   /* const updatePost = (postId, message) => {
 
-  const updateItem =  () => {
-    if (textUpdate) {
-       dispatch(updatePost(
-        postInfos._id, textUpdate
-      ))
-      setIsUpdated(false)
-      
-    }
-  };
-
-
+      return axios ({
+        method: 'put',
+        url: `${process.env.REACT_APP_API_URL}api/post/` + postId,
+        data: { message },
+        headers: {
+          Authorization: `Bearer ${token.token}`,
+        },
+        
+    })
+    .then((res) => console.log(res.data))
+    .catch((err) => console.log('erreur front'))
+        }
+  
+  
+  
+    const updateItem =  () => {
+      if (textUpdate) {
+         updatePost(
+          postInfos._id, textUpdate
+        )
+        setIsUpdated(false)
+        
+      }*/
 
     return (
 
@@ -52,17 +66,7 @@ export default function Card({ postInfos }) {
                         </div>
                             <span>{moment(postInfos.createdAt).format('LLL')}</span>
                     </div>
-                    {isUpdated ===false && <p>{postInfos.message}</p>}
-                    {isUpdated ===true && (
-                       <div className="update-post">
-                       <textarea
-                      defaultValue={postInfos.message}
-                      onChange={(e) => setTextUpdate(e.target.value)}/>
-                      <div className="button-container">
-                          <button className="btn" onClick={updateItem}>Valider modification</button>
-                      </div>
-                      </div>
-                      )}
+                   
                    
                     { postInfos.image ? (
                     <img src={postInfos.image} 
@@ -70,27 +74,14 @@ export default function Card({ postInfos }) {
                     className="card-pic" />
                     ): null}
                     
-                    { user.admin === true ? (
-                      <div className="button-container">
-                      <div onClick={() => setIsUpdated(!isUpdated)}>
-                          <img src="./img/icons/edit.svg" alt="edit"/>
-                      </div>
-                      <DeleteCard postInfos={postInfos}/>
-                 </div>
-                    ): token.userId === postInfos.posterId  && (
-                       <div className="button-container">
-                            <div onClick={() => setIsUpdated(!isUpdated)}>
-                                <img src="./img/icons/edit.svg" alt="edit"/>
-                            </div>
-                            <DeleteCard postInfos={postInfos}/>
-                       </div>
-                        ) 
-
-                      }
-
+                    
                     
                     <div className="card-footer">
+                    <UpdateCard postInfos={postInfos}/>
+                            <DeleteCard postInfos={postInfos}/>
+                      
                       <LikeButton postInfos = {postInfos}/>
+                      
                       
                       </div>
                 </div>
@@ -98,6 +89,7 @@ export default function Card({ postInfos }) {
         </li>
     )
 }
+
 
 
 
@@ -144,6 +136,7 @@ export default function Card({ postInfos }) {
 
 
 
+
   const updateItem =  () => {
     if (textUpdate) {
        updatePost(
@@ -152,4 +145,18 @@ export default function Card({ postInfos }) {
       setIsUpdated(false)
       
     }
-  };*/
+  };
+  
+  
+  
+  
+    const updateItem =  () => {
+    if (textUpdate) {
+       dispatch(updatePost(
+        postInfos._id, textUpdate
+      ))
+      setIsUpdated(false)
+      
+    }
+  };
+*/
