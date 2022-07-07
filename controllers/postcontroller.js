@@ -17,6 +17,9 @@ exports.readPost = (req, res) => {
 exports.createPost = async (req, res) => {
 
     console.log(req.body.posterId)
+    console.log(res.data)
+    console.log(req.file)
+    console.log('erreur img')
 
 
     const newPost = new Post({
@@ -29,6 +32,7 @@ exports.createPost = async (req, res) => {
 
     })
     newPost.save()
+    
         .then(() => res.status(201).json({ message: 'Post enregistré !' }))
         .catch(error => res.status(400).json({ error }));
 };

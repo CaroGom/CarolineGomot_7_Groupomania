@@ -15,7 +15,7 @@ const DeleteCard = ({postInfos}) => {
     //  window.location.reload();
     };
     return (
-        <div onClick={() => {
+        <div className='div-btn' onClick={() => {
             if (window.confirm('Voulez-vous supprimer cet article ?'))
             {handleDelete()}
         }}>

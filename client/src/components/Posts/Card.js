@@ -79,21 +79,29 @@ export default function Card({ postInfos }) {
                     <div className="card-footer">
 
                     { user.admin === true ? (
-                      <div className="div-btn">
+                      <>
+                      <div className="button-container">
                       <UpdateCard postInfos={postInfos}/>
+                      </div>
+                      <div className="button-container">
                       <DeleteCard postInfos={postInfos}/>
                       </div>
+                      </>
 
-                    ): null}
-                    
-                    {token.userId === postInfos.posterId  && (
-                      <div className="div-btn">
+                    ): ( token.userId === postInfos.posterId  && (
+                      <>
+                      <div className="button-container">
                       <UpdateCard postInfos={postInfos}/>
-                      <DeleteCard postInfos={postInfos}/>
                       </div>
+                      <div className="button-container">
+                        <DeleteCard postInfos={postInfos}/>
+                      </div>
+                      </>
        
                     ) 
-                    }
+                    )
+                  }
+                    
                       
                       <LikeButton postInfos = {postInfos}/>
                       
