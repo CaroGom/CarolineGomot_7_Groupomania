@@ -17,7 +17,7 @@ exports.readPost = (req, res) => {
 exports.createPost = async (req, res) => {
 
     console.log(req.body.posterId)
-    console.log(res.data)
+    console.log(req.body)
     console.log(req.file)
     console.log('erreur img')
 
@@ -41,7 +41,7 @@ exports.updatePost = (req, res) => {
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send("ID unknown : " + req.params.id)
     const updatedRecord = {
-        image: req.file !== undefined ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : "",
+        image: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : "",
         message: req.body.data.message
     }
     console.log('updatesrecord', req.file)
@@ -68,7 +68,7 @@ exports.deletePost = (req, res) => {
                 
                 const filename = post.image.split('/images/')[1];
                 fs.unlink(`images/${filename}`, () =>
-                    Post.deleteOne({ _id: req.params.id })
+                    post.deleteOne({ _id: req.params.id })
                         .then(() => res.status(200).json({ message: 'Post supprimé !' }))
                         .catch(error => res.status(400).json({ error, message: error.message }))
                 );

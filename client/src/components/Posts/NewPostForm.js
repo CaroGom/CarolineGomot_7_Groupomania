@@ -17,7 +17,7 @@ const NewPostForm = () => {
     //const userData= JSON.parse(localStorage.getItem('userdata'))
 
     const handlePicture = (e) => {
-        setPostImage(URL.createObjectURL(e.target.files[0]))
+        setPostImage(e.target.files[0])
         setFile(e.target[0])
     };
 
@@ -33,8 +33,10 @@ const NewPostForm = () => {
             postData.set('posterEmail', userData.email)
             postData.set('posterId', userData._id)
             postData.set('message', message)
-            if (file) postData.append("file", file);
+            if (postImage) postData.append("file", postImage);
 
+            console.log('file', file)
+            console.log('postImage', postImage)
             return axios(
                 {
                     method: "post",
@@ -97,10 +99,10 @@ const NewPostForm = () => {
                                     <img src='./img/icons/picture.svg' alt="add image" />
                                     <input
                                         type="file"
-                                        id="file-upload"
+                                        id="file"
                                         name="file"
                                         accept=".jpg, .jpeg, .png"
-                                        value={postData.image}
+                                        value={postData.file}
                                         onChange={(e) => handlePicture(e)} />
 
                                 </div>
