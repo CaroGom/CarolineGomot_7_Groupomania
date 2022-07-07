@@ -2,7 +2,13 @@ const mongoose = require('mongoose');
 
 const PostSchema = new mongoose.Schema(
     {
+        
         posterId: {
+            type: String, 
+            required: true
+        },
+
+        posterEmail: {
             type: String, 
             required: true
         },
@@ -18,7 +24,7 @@ const PostSchema = new mongoose.Schema(
             type: [String],
             required: true,
         },
-        comments: {
+       /* comments: {
             type: [
                 {
                     commenterId: String, 
@@ -28,8 +34,9 @@ const PostSchema = new mongoose.Schema(
                 }
             ],
             required: true,
+            */
         },
-    },
+    
     {
         timestamps: true,
     }

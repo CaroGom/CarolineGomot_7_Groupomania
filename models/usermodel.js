@@ -21,6 +21,11 @@ const userSchema = new mongoose.Schema(
         },
         likes: {
             type: [String],
+        },
+        admin: {
+            type: Boolean,
+            required: true,
+            default: false
         }
     },
     {
@@ -34,6 +39,7 @@ userSchema.pre("save", async function(next){
     next();
 })
 
+/*
 userSchema.statics.login = async function(email, password){
     const user = await this.findOne({ email });
     if(user) {
@@ -44,6 +50,6 @@ userSchema.statics.login = async function(email, password){
         throw Error('incorrect password');
     }
     throw Error('incorrect email')
-};
+};*/
 userSchema.plugin(uniqueValidator);
 module.exports = mongoose.model('User', userSchema);

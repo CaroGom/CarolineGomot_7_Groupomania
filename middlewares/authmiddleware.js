@@ -1,8 +1,22 @@
 const jwt = require('jsonwebtoken');
-const cookieParser = require('cookie-parser');
-const User = require('../models/usermodel');
+const path = require('path')
+require('dotenv').config({path: './config/.env'});
 
+module.exports = (req, res, next) => {
+    try {
+        const Bearer = req.headers.authorization.split(' ')[1];
+        console.log(req.headers.authorization);
+        req.token = jwt.verify(Bearer, process.env.RANDOM_TOKEN_SECRET);
+        console.log(req.token);
+        next()
+    } catch (error) {
+        res.status(401).json({
+            error: error
+        })
+    }
+};
 
+/*
 module.exports.checkUser = (req, res, next) => {
     try{
         //return array with bearer as first element and token as second element
@@ -47,3 +61,5 @@ module.exports.requireAuth = (req, res, next) => {
         console.log('No token');
     }
 };
+
+*/

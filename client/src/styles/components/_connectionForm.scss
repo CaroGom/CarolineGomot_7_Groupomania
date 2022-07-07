@@ -1,7 +1,7 @@
-.connection-from {
+.connection-form {
   border: 2px solid $color-1;
   width: 400px;
-  margin: 35px auto 0;
+  margin: 100px auto 0;
   padding: 20px 0;
   user-select: none;
   text-align: center;
@@ -38,6 +38,11 @@
     margin: 10px auto 0;
     padding: 20px;
 
+    input {
+      border: 2px solid $color-2;
+      padding: 20px;
+      font-size: 1.5em;
+    }
   }
 }
 
