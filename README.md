@@ -1,13 +1,18 @@
 # CarolineGomot_7_Groupomania
 
 
-Téléchargez le repository, dézippez-le. Dans le terminal de commande, placez-vous dans le dossier backend et exécutez la commande npm install pour installer les dépendances du backend. Ouvrez un autre terminal de commande, placez-vous dans le dossier client et exécutez la commande npm install pour installer les dépendances côté client.
+Téléchargez le repository DEPUIS LA BRANCH_1, dézippez-le. Dans le terminal de commande, placez-vous dans le dossier backend et exécutez la commande npm install pour installer les dépendances du backend. 
+
+Ouvrez un autre terminal de commande, placez-vous dans le dossier client et exécutez la commande npm install pour installer les dépendances côté client.
 
 Création d'un fichier .env dans le backend
 
 dans le dossier backend/config, créez un fichier.env. Les informations à renseigner dedans sont les suivantes : 
 
 PORT=3000
+
+
+
 RANDOM_TOKEN_SECRET=<clédetokensouhaitée>
 
 
