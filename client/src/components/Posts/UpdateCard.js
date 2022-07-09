@@ -43,7 +43,7 @@ const UpdateCard = ({ postInfos }) => {
                        
                     }
                 )
-                .then((res) => console.log(res.data))
+                .then((res) => console.log(res.data, window.location.reload()))
                 .catch((err) => console.log(err));
     
             } else {
@@ -51,9 +51,6 @@ const UpdateCard = ({ postInfos }) => {
             }
     
         }
-    
-
-
 
 
     return (

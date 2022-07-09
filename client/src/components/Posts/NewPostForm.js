@@ -49,7 +49,7 @@ const NewPostForm = () => {
                    
                 }
             )
-            .then((res) => console.log(res))
+            .then((res) => console.log(res.data, window.location.reload()))
             .catch((err) => console.log(err));
 
         } else {
