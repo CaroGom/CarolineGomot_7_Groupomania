@@ -120,11 +120,7 @@
           width: 240px;
           transform: translateY(-3px);
 
-          &:hover {
-            background: $color-1;
-            width: 250px;
-            letter-spacing: 1px;
-          }
+          
         }
       }
     }
@@ -152,9 +148,7 @@
         transition: 0.1s;
         cursor: pointer;
 
-        &:hover {
-          transform: scale(1.07);
-        }
+        
 
         img {
           height: 16px;
