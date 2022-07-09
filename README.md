@@ -8,13 +8,12 @@ Création d'un fichier .env dans le backend
 dans le dossier backend/config, créez un fichier.env. Les informations à renseigner dedans sont les suivantes : 
 
 PORT=3000
-DB_USER_PASS=<nomducompteMongoDB>:<motdepassedevotreDBassociée>
 RANDOM_TOKEN_SECRET=<clédetokensouhaitée>
 
 
 Connexion à la base de données :
 
-Les informations de la base de données utilisées pour le développement du site ont été conservées dans les documents et peuvent être utilisées pour tester le site. Elles se trouvent dans le dossier backend/config/db, en commentaires. Vous pouvez modifier les informations dans la fonction mongoose.connect du même fichier directement en effaçant et remplaçant la partie ' + process.env.DB_USER_PASS + ' par la partie en commentaires, ou ajouter ces informations ou vos propres accès MongoDB à la clé DB_USER_PASS dans le fichier .env.
+Les informations de la base de données utilisée pour le développement du site ont été conservées dans les documents et peuvent être utilisées pour tester le site. Elles se trouvent dans le dossier backend/config/db. Vous pouvez modifier les informations dans la fonction mongoose.connect du même fichier directement en effaçant et remplaçant 'mongodb+srv://<nomutilisateur>:<motdepasse>cluster0.oufuxwn.mongodb.net/<nomdatabase>?retryWrites=true&w=majority'.
 
 Lancement du serveur backend
 
