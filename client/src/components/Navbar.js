@@ -49,7 +49,7 @@ const Navbar = () => {
                 <ul>
                     <li></li>
                     <li className="welcome">
-                        <NavLink exact to ="/connexion">
+                        <NavLink to ="/connexion">
                             <h5>Bienvenue !</h5>
                         </NavLink>
                     </li>
