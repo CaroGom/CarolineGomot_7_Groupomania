@@ -11,7 +11,10 @@ const DeleteCard = ({postInfos}) => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
+      })
+      .then((res) => console.log(res.data, window.location.reload()))
+      .catch((err) => console.log(err));
+
     //  window.location.reload();
     };
     return (

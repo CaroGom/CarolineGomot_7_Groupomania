@@ -6,7 +6,7 @@ import { likePost, unlikePost } from '../../actions/post.actions';
 
 function LikeButton(postInfos) {
     const user = useContext(UidContext);
-    const [liked, setLiked] = useState(false);
+    //const [liked, setLiked] = useState(false);
     console.log(postInfos.postInfos._id);
 
     const DisplayLike = () => {
@@ -21,9 +21,9 @@ function LikeButton(postInfos) {
                     
                 },
             })
-                .then((res) => console.log(res.data))
+                .then((res) => console.log(res.data, window.location.reload()))
                 .catch((err) => console.log(err));
-            //window.location.reload();
+            
         };
         const handleUnlike = () => {
             const token = localStorage.getItem("token");
@@ -35,9 +35,9 @@ function LikeButton(postInfos) {
                     Authorization: `Bearer ${token}`,
                 },
             })
-                .then((res) => console.log(res.data))
+                .then((res) => console.log(res.data, window.location.reload()))
                 .catch((err) => console.log(err));
-            //window.location.reload();
+            
 
 
         };
