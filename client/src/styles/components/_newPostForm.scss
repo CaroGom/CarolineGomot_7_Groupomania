@@ -4,6 +4,8 @@
   border-radius: 20px;
   position: relative;
   background: $color-4;
+  min-width: 500px;
+  min-height: 200px;
 
   i {
     font-size: 1.5rem;
@@ -12,8 +14,8 @@
   }
 
   .data {
-    position: absolute;
-    right: 42px;
+    //position: absolute;
+    //right: 42px;
     text-align: right;
 
     @media screen and(max-width: 420px) {

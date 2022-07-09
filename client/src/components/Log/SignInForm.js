@@ -8,49 +8,40 @@ const SignInForm = () => {
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
 
-const handleLogin = async (e) => {
-    e.preventDefault();
-    const emailError = document.querySelector(".email.error");
-    const passwordError = document.querySelector(".password.error");
+const handleLogin = (e) => {
 
-    //GET requests test, returns arrays of stuff
-    const user = await fetch("http://localhost:3000/api/auth/");
-    const post = await fetch("http://localhost:3000/api/post/");
-
-    console.log(await user.json());
-    console.log(await post.json());
-
-    //POST request fetch
-
-    const response = await fetch("http://localhost:3000/api/auth/login/", {
+  e.preventDefault();
+  const emailError = document.querySelector(".email.error");
+  const passwordError = document.querySelector(".password.error");
+  axios({
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
+      url: `${process.env.REACT_APP_API_URL}api/auth/login`,
       
-    }
-    
-    );
+      
+      data : {
+          email, 
+          password,
+      }
+  })
+  .then ((res) => {
+      console.log(res);
+      if (res.data.errors) {
+          emailError.innerHTML = res.data.errors.email;
+          passwordError.innerHTML = res.data.errors.password;
+      } else {
+        localStorage.setItem('userdata', JSON.stringify(res.data))
+        localStorage.setItem('token', (res.data.token))
+        localStorage.setItem('userId', (res.data.userId))
+          window.location = '/home';
+      }
+  })
+  .catch((err) => {
+      console.log(err);
+  });
 
+}
     
-    console.log(response);
-    //console.log(await response.json());
-    const userLogInfo = await response.json();
-    if (userLogInfo.errors) {
-        emailError.innerHTML = userLogInfo.errors.email;
-        passwordError.innerHTML = userLogInfo.errors.password;
-    } else {
-        window.location = '/';
-    }
 
-    console.log(userLogInfo);
-
-    
-  };
 
 
 
@@ -145,6 +136,51 @@ const handleLogin = async (e) => {
     
     console.log(response);
     console.log(await response.json());
+
+
+
+    
+const handleLogin = async (e) => {
+    e.preventDefault();
+    const emailError = document.querySelector(".email.error");
+    const passwordError = document.querySelector(".password.error");
+
+    //GET requests test, returns arrays of stuff
+    const user = await fetch("http://localhost:3000/api/auth/");
+    const post = await fetch("http://localhost:3000/api/post/");
+
+    console.log(await user.json());
+    console.log(await post.json());
+
+    //POST request fetch
+
+    const response = await fetch("http://localhost:3000/api/auth/login/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+      
+    }
+    
+    );
+    
+  };
+  
+      console.log(response);
+    //console.log(await response.json());
+    const userLogInfo = await response.json();
+    if (userLogInfo.errors) {
+        emailError.innerHTML = userLogInfo.errors.email;
+        passwordError.innerHTML = userLogInfo.errors.password;
+    } else {
+        window.location = '/';
+    }
+
+    console.log(userLogInfo);
 
     
   };*/

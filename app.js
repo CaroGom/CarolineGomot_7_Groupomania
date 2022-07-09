@@ -14,7 +14,31 @@ const PostRoutes = require("./routes/postroute");
 
 const app = express();
 
-app.use(cors());
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Cross-Origin-Resource-Policy', '*');
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization'
+    );
+    res.setHeader(
+      'Access-Control-Allow-Methods',
+      'GET, POST, PUT, DELETE, PATCH, OPTIONS'
+    );
+    next();
+  });
+
+/*const corsOptions = {
+    origin: 'http://localhost:3001',
+    credentials: true,
+    'allowedHeaders': ['sessionId', 'Content-Type', 'Access-Control-Allow-Origin', 'authorization'],
+    'exposedHeaders': ['sessionId'],
+    'methods': 'GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS',
+    'preflightContinue': false
+};
+
+app.use(cors(corsOptions));*/
 
 //setting up POST routes
 
@@ -24,11 +48,12 @@ app.use(cookieParser());
 app.get("/", (req, res) => res.send("hello"));
 
 //jwt
+/*
 app.get('*', checkUser);
 app.get('/jwtid', requireAuth, (req, res) => {
     res.status(200).send(res.locals.user._id);
 })
-
+*/
 //img management
 app.use("/images", express.static(path.join(__dirname, "images")));
 
