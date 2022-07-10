@@ -7,7 +7,7 @@ const Connexion = () => {
     return (
         <div className='profil-page'>
             { uid ? ( 
-            <h1>Page update</h1>
+            <h1>Vous êtes déjà connecté, <a href="/home"  rel="noopener noreferrer">faites marche arrière</a> !</h1>
             ) : ( <div className='log-container'>
             <Log signin={true} signup={false} />
             <div className='img-container'>
