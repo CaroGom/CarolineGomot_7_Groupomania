@@ -13,6 +13,8 @@
 dans le dossier backend/config, créez un fichier.env. Les informations à renseigner dedans sont les suivantes : 
 
 PORT=3000
+
+
 RANDOM_TOKEN_SECRET=<clédetokensouhaitée>
 
 
