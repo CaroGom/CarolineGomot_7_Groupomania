@@ -1,5 +1,6 @@
 # CarolineGomot_7_Groupomania
 
+Groupomania est un site qui est un premier jet de réseau social, créé en ReactJS.
 
 ###Téléchargez le repository DEPUIS LA BRANCH_1
 , dézippez-le. 
